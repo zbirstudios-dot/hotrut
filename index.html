@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="ThunderBarber Studio — Barbería premium en Zona Andares, Zapopan">
+<title>ThunderBarber Studio | Reserva tu cita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g1:#C9A84C; --g2:#E8C96A; --g3:#F5E0A0; --g-d:#7A5C18; --g-dk:#3D2E0C;
+  --bg:#0D0B08; --bg2:#151210; --bg3:#1D1812; --bg4:#251E15;
+  --surface:#1A1510; --surface2:#221C13;
+  --border:rgba(201,168,76,.14); --border2:rgba(201,168,76,.28); --border3:rgba(201,168,76,.5);
+  --text:#F5EDD8; --text2:#C4B58A; --text3:#7A6B4A; --text4:#3D3222;
+  --red:#E03420; --green:#2DB87A;
+  --glow:rgba(201,168,76,.18); --glow2:rgba(201,168,76,.08);
+  --r:4px;
+  --font-display:'Anton',sans-serif;
+  --font-body:'Barlow Condensed',sans-serif;
+  --font-serif:'Cormorant Garamond',serif;
+  --font-mono:'DM Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
+body.modal-open{overflow:hidden;}
+
+/* ═══ CURSOR ═══ */
+.cur-dot{width:6px;height:6px;background:var(--g1);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s;mix-blend-mode:screen;}
+.cur-ring{width:28px;height:28px;border:1px solid var(--g1);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:.4;transition:width .25s,height .25s,opacity .2s;mix-blend-mode:screen;}
+body.hovering .cur-dot{width:14px;height:14px;}
+body.hovering .cur-ring{width:48px;height:48px;opacity:.7;}
+@media(hover:none){.cur-dot,.cur-ring{display:none;}body{cursor:auto;}}
+
+/* ═══ NOISE OVERLAY ═══ */
+body::before{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.028;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px;}
+
+/* ═══ LOADER ═══ */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:12000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility .8s;}
+#loader.out{opacity:0;visibility:hidden;pointer-events:none;}
+.ld-bolt{font-size:56px;animation:ld-pulse 1.2s ease-in-out infinite;filter:drop-shadow(0 0 24px var(--g1));}
+@keyframes ld-pulse{0%,100%{transform:scale(1) rotate(-8deg);filter:drop-shadow(0 0 18px var(--g1));}50%{transform:scale(1.2) rotate(8deg);filter:drop-shadow(0 0 60px var(--g2));}}
+.ld-name{font-family:var(--font-display);font-size:14px;letter-spacing:10px;color:var(--g1);animation:ld-fade 1.5s ease infinite alternate;}
+@keyframes ld-fade{from{opacity:.2;}to{opacity:1;}}
+.ld-track{width:160px;height:1px;background:var(--bg4);margin-top:6px;position:relative;overflow:hidden;}
+.ld-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--g-d),var(--g1),var(--g2));animation:ld-bar 2.4s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes ld-bar{from{width:0;}to{width:100%;}}
+
+/* ═══ NAV ═══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:8000;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:background .4s,border-color .4s,backdrop-filter .4s;}
+#nav.scrolled{background:rgba(13,11,8,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--g1);text-decoration:none;cursor:none;display:flex;align-items:center;gap:8px;}
+.nav-logo span{font-size:20px;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:12px;letter-spacing:3px;color:var(--text3);text-decoration:none;transition:color .2s;cursor:none;font-weight:600;}
+.nav-links a:hover{color:var(--g1);}
+@media(max-width:780px){.nav-links{display:none;}}
+#ham{width:40px;height:40px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:none;transition:border-color .2s;}
+#ham:hover{border-color:var(--g1);}
+.hb{width:18px;height:1.5px;background:var(--g1);border-radius:1px;transition:all .35s cubic-bezier(.4,0,.2,1);}
+#ham.open .hb:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+#ham.open .hb:nth-child(2){opacity:0;transform:scaleX(0);}
+#ham.open .hb:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+#mob-ov{position:fixed;inset:0;z-index:7000;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:all .3s;}
+#mob-ov.open{opacity:1;visibility:visible;}
+#mob-menu{position:fixed;top:0;right:0;width:min(300px,88vw);height:100dvh;background:var(--surface);border-left:1px solid var(--border2);z-index:7500;transform:translateX(100%);transition:transform .45s cubic-bezier(.4,0,.2,1);padding:72px 28px 32px;display:flex;flex-direction:column;overflow-y:auto;}
+#mob-menu::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g1),transparent);}
+#mob-menu.open{transform:none;}
+.mob-lnk{display:flex;align-items:center;gap:12px;padding:14px 0;color:var(--text2);text-decoration:none;font-size:15px;letter-spacing:3px;font-weight:700;border-bottom:1px solid var(--border);transition:color .2s,padding-left .25s;cursor:none;}
+.mob-lnk:hover{color:var(--g1);padding-left:8px;}
+.mob-lnk-ico{font-size:16px;width:22px;text-align:center;}
+.mob-soc{margin-top:auto;padding-top:24px;display:flex;gap:10px;}
+.msoc-btn{width:36px;height:36px;border:1px solid var(--border2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;transition:all .2s;cursor:none;}
+.msoc-btn:hover{background:var(--g1);border-color:var(--g1);}
+
+/* ═══ HERO ═══ */
+#inicio{min-height:100dvh;display:grid;place-items:center;position:relative;overflow:hidden;padding:80px 24px 60px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 35%,rgba(201,168,76,.06) 0%,transparent 70%);}
+.hero-vlines{position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(90deg,rgba(201,168,76,.03) 0,rgba(201,168,76,.03) 1px,transparent 1px,transparent 80px);}
+.hero-hlines{position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(201,168,76,.03) 0,rgba(201,168,76,.03) 1px,transparent 1px,transparent 80px);}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(201,168,76,.08) 0%,transparent 70%);pointer-events:none;animation:hero-breathe 5s ease-in-out infinite;}
+@keyframes hero-breathe{0%,100%{opacity:.7;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.12);}}
+.hero-corner{position:absolute;width:60px;height:60px;pointer-events:none;transition:opacity .6s ease;}
+.hero-corner.tl{top:80px;left:24px;border-top:1px solid var(--border2);border-left:1px solid var(--border2);}
+.hero-corner.tr{top:80px;right:24px;border-top:1px solid var(--border2);border-right:1px solid var(--border2);}
+.hero-corner.bl{bottom:60px;left:24px;border-bottom:1px solid var(--border2);border-left:1px solid var(--border2);}
+.hero-corner.br{bottom:60px;right:24px;border-bottom:1px solid var(--border2);border-right:1px solid var(--border2);}
+.hero-inner{position:relative;z-index:2;text-align:center;max-width:900px;}
+.hero-eyebrow{font-size:11px;letter-spacing:7px;color:var(--g1);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:12px;animation:fadey .8s ease .2s both;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--g1));}
+.hero-eyebrow::after{background:linear-gradient(90deg,var(--g1),transparent);}
+.hero-bolt{font-size:clamp(60px,14vw,100px);filter:drop-shadow(0 0 40px var(--g1));animation:bolt 3s ease-in-out infinite;display:block;line-height:1;margin-bottom:8px;}
+@keyframes bolt{0%,100%{transform:rotate(-7deg);filter:drop-shadow(0 0 30px var(--g1));}50%{transform:rotate(7deg) scale(1.06);filter:drop-shadow(0 0 70px var(--g2));}}
+.hero-t1{font-family:var(--font-display);font-size:clamp(72px,18vw,160px);letter-spacing:2px;line-height:.88;display:block;animation:fadey .8s ease .4s both;}
+.hero-t2{font-family:var(--font-display);font-size:clamp(72px,18vw,160px);letter-spacing:2px;line-height:.88;display:block;-webkit-text-stroke:1px rgba(201,168,76,.5);color:transparent;animation:fadey .8s ease .5s both;}
+.gold-text{background:linear-gradient(135deg,var(--g-d) 0%,var(--g1) 40%,var(--g2) 60%,var(--g1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-studio{font-family:var(--font-display);font-size:clamp(16px,3.5vw,28px);letter-spacing:clamp(10px,4vw,22px);color:rgba(201,168,76,.3);margin-top:12px;animation:fadey .8s ease .6s both;}
+.hero-sep{width:1px;height:60px;background:linear-gradient(180deg,transparent,var(--g1),transparent);margin:24px auto;animation:fadey .8s ease .7s both;}
+.hero-tag{font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--text3);letter-spacing:1px;margin-bottom:32px;animation:fadey .8s ease .8s both;}
+@keyframes fadey{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadey .8s ease 1s both;}
+.hero-scroll{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:scroll-pulse 2s ease infinite;cursor:none;z-index:2;}
+.hero-scroll span{font-size:9px;letter-spacing:5px;color:var(--text4);}
+.scroll-arr{width:20px;height:20px;border-right:1px solid var(--text4);border-bottom:1px solid var(--text4);transform:rotate(45deg);}
+@keyframes scroll-pulse{0%,100%{opacity:.3;transform:translateX(-50%) translateY(0);}50%{opacity:.7;transform:translateX(-50%) translateY(8px);}}
+
+/* ═══ STATUS BADGE ═══ */
+.status-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:20px;font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:20px;animation:fadey .8s ease .15s both;}
+.status-badge.open{background:rgba(45,184,122,.12);border:1px solid rgba(45,184,122,.3);color:#2DB87A;}
+.status-badge.closed{background:rgba(224,52,32,.1);border:1px solid rgba(224,52,32,.25);color:#E03420;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:dot-blink 1.5s ease infinite;}
+@keyframes dot-blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ═══ BTNS ═══ */
+.btn-primary{padding:13px 28px;background:var(--g1);color:var(--bg);font-family:var(--font-body);font-weight:800;font-size:12px;letter-spacing:4px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:var(--r);transition:all .25s;position:relative;overflow:hidden;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g2),var(--g1));opacity:0;transition:opacity .25s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.4);}
+.btn-primary:hover::before{opacity:1;}
+.btn-primary span{position:relative;z-index:1;}
+.btn-secondary{padding:12px 26px;background:transparent;color:var(--text);font-family:var(--font-body);font-weight:700;font-size:12px;letter-spacing:4px;border:1px solid rgba(245,237,216,.25);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:var(--r);transition:all .25s;}
+.btn-secondary:hover{background:rgba(245,237,216,.06);border-color:rgba(245,237,216,.5);transform:translateY(-2px);}
+.btn-ghost{padding:9px 20px;background:transparent;color:var(--g1);font-family:var(--font-body);font-weight:700;font-size:11px;letter-spacing:3px;border:1px solid var(--border2);cursor:pointer;border-radius:var(--r);transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-ghost:hover{background:rgba(201,168,76,.08);border-color:var(--g1);}
+
+/* ═══ SECTION FRAME ═══ */
+section{padding:clamp(60px,8vw,100px) clamp(20px,5vw,40px);position:relative;}
+.cont{max-width:1100px;margin:0 auto;width:100%;}
+.sec-head{margin-bottom:clamp(32px,5vw,52px);}
+.sec-label{font-size:10px;letter-spacing:7px;color:var(--g1);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sec-label::before{content:'';width:30px;height:1px;background:var(--g1);}
+.sec-title{font-family:var(--font-display);font-size:clamp(38px,8vw,72px);letter-spacing:2px;line-height:.95;color:var(--text);}
+.sec-sub{font-family:var(--font-serif);font-style:italic;font-size:16px;color:var(--text3);margin-top:10px;}
+.sec-rule{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:0;}
+
+/* ═══ SERVICIOS ═══ */
+#servicios{background:var(--bg2);}
+#servicios::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+.srv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;}
+.srv-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:clamp(20px,4vw,28px);position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .3s;cursor:default;}
+.srv-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.04),transparent);opacity:0;transition:opacity .35s;}
+.srv-card-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g1),transparent);transform:scaleX(0);transition:transform .4s;}
+.srv-vip-badge{position:absolute;top:14px;right:14px;background:var(--g1);color:var(--bg);font-family:var(--font-display);font-size:9px;letter-spacing:2px;padding:3px 8px;border-radius:2px;}
+.srv-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.2);border-color:var(--border2);}
+.srv-card:hover::after{opacity:1;}
+.srv-card:hover .srv-card-line{transform:scaleX(1);}
+.srv-ico{font-size:32px;margin-bottom:14px;display:block;transition:transform .3s;}
+.srv-card:hover .srv-ico{transform:scale(1.1) rotate(-5deg);}
+.srv-num{font-family:var(--font-mono);font-size:10px;color:var(--text4);letter-spacing:2px;margin-bottom:4px;}
+.srv-name{font-family:var(--font-display);font-size:26px;letter-spacing:2px;color:var(--text);margin-bottom:6px;}
+.srv-price{font-family:var(--font-mono);font-size:28px;color:var(--g1);font-weight:500;margin-bottom:10px;}
+.srv-price small{font-size:13px;color:var(--text3);}
+.srv-desc{font-size:14px;color:var(--text3);line-height:1.7;margin-bottom:10px;font-weight:400;}
+.srv-time{font-size:11px;letter-spacing:2px;color:var(--text4);display:flex;align-items:center;gap:6px;margin-bottom:18px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:3px;width:fit-content;}
+.srv-btn{width:100%;padding:11px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:var(--font-body);font-size:12px;letter-spacing:3px;cursor:pointer;border-radius:var(--r);font-weight:700;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.srv-btn:hover{background:var(--g1);color:var(--bg);border-color:var(--g1);transform:translateY(-1px);box-shadow:0 4px 18px rgba(201,168,76,.3);}
+.srv-btn:active{transform:scale(.97);}
+.srv-card.vip{border-color:rgba(201,168,76,.3);}
+.srv-card.vip .srv-btn{border-color:var(--g1);color:var(--g1);}
+
+/* ═══ BARBEROS ═══ */
+#barberos{background:var(--bg3);}
+.brb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:20px;}
+.brb-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;cursor:default;transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s,border-color .3s;position:relative;}
+.brb-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.3);border-color:rgba(201,168,76,.5);}
+.brb-img-w{aspect-ratio:3/4;overflow:hidden;position:relative;}
+.brb-img-w::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(13,11,8,.95) 100%);}
+.brb-img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%) brightness(.95);transition:transform .6s cubic-bezier(.4,0,.2,1),filter .4s;}
+.brb-card:hover .brb-img{transform:scale(1.08);filter:grayscale(0%) brightness(1);}
+.brb-num{position:absolute;top:12px;left:14px;font-family:var(--font-mono);font-size:9px;color:var(--g1);letter-spacing:2px;z-index:1;background:rgba(13,11,8,.7);padding:3px 7px;border-radius:2px;}
+.brb-info{padding:clamp(14px,3vw,20px);}
+.brb-name{font-family:var(--font-display);font-size:28px;letter-spacing:3px;color:var(--text);}
+.brb-role{font-size:10px;letter-spacing:3px;color:var(--g1);margin-bottom:14px;font-weight:600;}
+.brb-exp{font-size:12px;color:var(--text4);margin-bottom:14px;font-family:var(--font-mono);}
+.brb-btn{width:100%;padding:11px;background:linear-gradient(90deg,var(--g-d),var(--g1));border:none;color:var(--bg);font-family:var(--font-body);font-weight:800;font-size:12px;letter-spacing:3px;cursor:pointer;border-radius:var(--r);transition:opacity .2s,transform .2s;}
+.brb-btn:hover{opacity:.85;transform:scale(.99);}
+.brb-btn:active{transform:scale(.96);}
+
+/* ═══ RESERVA — CALENDARIO MANUAL ═══ */
+#reserva{background:var(--bg2);position:relative;}
+#reserva::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+
+/* ─── CALENDAR WIDGET ─── */
+.booking-wrap{border:1px solid var(--border2);border-radius:12px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,.6),0 0 0 1px rgba(201,168,76,.05);position:relative;background:var(--surface);}
+.booking-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g1),transparent);z-index:1;pointer-events:none;}
+
+.bk-layout{display:grid;grid-template-columns:1fr 1fr;min-height:560px;}
+@media(max-width:760px){.bk-layout{grid-template-columns:1fr;}}
+
+/* LEFT: Calendar */
+.bk-left{padding:28px 24px;border-right:1px solid var(--border);position:relative;}
+@media(max-width:760px){.bk-left{border-right:none;border-bottom:1px solid var(--border);}}
+
+.bk-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.bk-month-label{font-family:var(--font-display);font-size:20px;letter-spacing:4px;color:var(--text);}
+.bk-nav-btn{width:34px;height:34px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--g1);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.bk-nav-btn:hover{background:rgba(201,168,76,.1);border-color:var(--g1);}
+
+.bk-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;}
+.bk-wd{font-size:9px;letter-spacing:2px;color:var(--text4);text-align:center;padding:4px 0;font-weight:700;}
+
+.bk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.bk-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:13px;font-family:var(--font-mono);color:var(--text3);cursor:pointer;border:1px solid transparent;transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;}
+.bk-day:not(.empty):not(.past):hover{background:rgba(201,168,76,.1);border-color:var(--border2);color:var(--text);transform:scale(1.08);}
+.bk-day.today{color:var(--g1);font-weight:700;}
+.bk-day.today::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--g1);}
+.bk-day.selected{background:var(--g1);color:var(--bg);border-color:var(--g1);font-weight:700;box-shadow:0 4px 16px rgba(201,168,76,.4);transform:scale(1.1);}
+.bk-day.past{color:var(--text4);cursor:not-allowed;opacity:.35;}
+.bk-day.empty{cursor:default;}
+.bk-day.closed-day{color:var(--text4);cursor:not-allowed;opacity:.3;text-decoration:line-through;}
+
+/* RIGHT: Form */
+.bk-right{padding:28px 24px;display:flex;flex-direction:column;gap:0;}
+
+.bk-section-title{font-size:10px;letter-spacing:5px;color:var(--g1);margin-bottom:14px;display:flex;align-items:center;gap:8px;font-weight:700;}
+.bk-section-title::before{content:'';width:20px;height:1px;background:var(--g1);}
+
+/* Time slots */
+.bk-time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:22px;max-height:160px;overflow-y:auto;padding-right:2px;scrollbar-width:thin;scrollbar-color:var(--g1) transparent;}
+@media(max-width:400px){.bk-time-grid{grid-template-columns:repeat(3,1fr);}}
+.bk-t-btn{padding:9px 4px;background:var(--bg4);border:1px solid var(--border);color:var(--text3);font-family:var(--font-mono);font-size:11px;cursor:pointer;text-align:center;border-radius:var(--r);transition:all .2s;}
+.bk-t-btn:hover:not(.taken){border-color:var(--g1);color:var(--g1);background:rgba(201,168,76,.07);transform:scale(1.04);}
+.bk-t-btn.selected{background:var(--g1);color:var(--bg);border-color:var(--g1);font-weight:700;box-shadow:0 2px 12px rgba(201,168,76,.3);}
+.bk-t-btn.taken{background:rgba(224,52,32,.05);border-color:rgba(224,52,32,.15);color:rgba(255,255,255,.15);text-decoration:line-through;cursor:not-allowed;pointer-events:none;}
+.bk-t-empty{grid-column:1/-1;color:var(--text4);font-size:12px;text-align:center;padding:20px;letter-spacing:1px;font-style:italic;}
+
+/* Barber selector */
+.bk-barbers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:22px;}
+.bk-brb-btn{padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;transition:all .22s;}
+.bk-brb-btn:hover{border-color:var(--border2);background:rgba(201,168,76,.05);}
+.bk-brb-btn.selected{border-color:var(--g1);background:rgba(201,168,76,.1);}
+.bk-brb-name{font-family:var(--font-display);font-size:15px;letter-spacing:2px;color:var(--text);display:block;}
+.bk-brb-role{font-size:9px;letter-spacing:2px;color:var(--text4);display:block;margin-top:2px;}
+.bk-brb-btn.selected .bk-brb-name{color:var(--g1);}
+
+/* Personal info fields */
+.bk-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+@media(max-width:400px){.bk-fields{grid-template-columns:1fr;}}
+.bk-fg{display:flex;flex-direction:column;gap:5px;}
+.bk-label{font-size:9px;letter-spacing:4px;color:var(--g1);font-weight:700;}
+.bk-input{width:100%;padding:10px 12px;background:var(--bg4);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:14px;letter-spacing:.5px;outline:none;border-radius:var(--r);transition:border-color .2s,box-shadow .2s;}
+.bk-input:focus{border-color:var(--g1);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
+.bk-input::placeholder{color:var(--text4);}
+.bk-phone-wrap{grid-column:1/-1;}
+
+/* Summary */
+.bk-summary{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--text3);line-height:1.9;letter-spacing:.4px;}
+.bk-summary strong{color:var(--g1);}
+.bk-summary.empty{color:var(--text4);font-style:italic;text-align:center;padding:16px;}
+
+/* Confirm btn */
+.btn-confirm-main{width:100%;padding:15px;background:linear-gradient(135deg,var(--g-d),var(--g1));border:none;color:var(--bg);font-family:var(--font-body);font-weight:800;font-size:14px;letter-spacing:4px;cursor:pointer;border-radius:var(--r);transition:opacity .2s,transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;overflow:hidden;}
+.btn-confirm-main::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g2),var(--g1));opacity:0;transition:opacity .25s;}
+.btn-confirm-main:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.4);}
+.btn-confirm-main:hover::after{opacity:1;}
+.btn-confirm-main span{position:relative;z-index:1;}
+.btn-confirm-main:active{transform:scale(.98);}
+.btn-confirm-main:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ═══ AVAILABILITY OVERLAY ═══ */
+#avail-overlay{position:fixed;inset:0;z-index:11500;background:rgba(0,0,0,.92);backdrop-filter:blur(18px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;}
+#avail-overlay.show{opacity:1;visibility:visible;}
+.avail-icon{font-size:52px;animation:avail-spin 2s linear infinite;filter:drop-shadow(0 0 30px var(--g1));}
+@keyframes avail-spin{from{transform:rotate(0deg) scale(1);}50%{transform:rotate(180deg) scale(1.15);}to{transform:rotate(360deg) scale(1);}}
+.avail-title{font-family:var(--font-display);font-size:clamp(22px,5vw,32px);letter-spacing:8px;color:var(--g1);text-align:center;animation:avail-pulse 1.2s ease-in-out infinite;}
+@keyframes avail-pulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+.avail-dots{display:flex;gap:10px;align-items:center;}
+.avail-dot{width:10px;height:10px;border-radius:50%;background:var(--g1);animation:avail-bounce .9s ease-in-out infinite;}
+.avail-dot:nth-child(1){animation-delay:0s;}
+.avail-dot:nth-child(2){animation-delay:.18s;}
+.avail-dot:nth-child(3){animation-delay:.36s;}
+@keyframes avail-bounce{0%,100%{transform:translateY(0);opacity:.3;}50%{transform:translateY(-14px);opacity:1;}}
+.avail-sub{font-family:var(--font-mono);font-size:12px;letter-spacing:3px;color:var(--text3);}
+
+/* ═══ BOOKING MODAL ═══ */
+#bk-modal{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:all .3s;}
+#bk-modal.open{opacity:1;visibility:visible;}
+.m-box{background:var(--surface);border:1px solid var(--border2);width:100%;max-width:540px;max-height:94dvh;overflow-y:auto;border-radius:8px;position:relative;transform:scale(.93) translateY(18px);transition:transform .4s cubic-bezier(.4,0,.2,1);box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 0 1px rgba(201,168,76,.1);}
+#bk-modal.open .m-box{transform:none;}
+.m-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g1),transparent);border-radius:8px 8px 0 0;}
+.m-head{padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:10;}
+.m-ttl{font-family:var(--font-display);font-size:22px;letter-spacing:4px;color:var(--g1);}
+.m-ttl small{display:block;font-family:var(--font-body);font-size:10px;letter-spacing:3px;color:var(--text4);font-weight:400;margin-top:2px;}
+.m-cls{width:34px;height:34px;background:transparent;border:1px solid var(--border);color:var(--text3);font-size:14px;cursor:pointer;border-radius:var(--r);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.m-cls:hover{background:var(--red);color:white;border-color:var(--red);}
+.m-body{padding:20px 24px;}
+.fg{margin-bottom:18px;}
+.fl{display:flex;align-items:center;gap:7px;font-size:10px;letter-spacing:4px;color:var(--g1);margin-bottom:7px;font-weight:700;}
+.fl-ico{font-size:12px;}
+.fi,.fs{width:100%;padding:11px 14px;background:var(--bg4);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:14px;letter-spacing:.5px;outline:none;border-radius:var(--r);transition:border-color .2s,box-shadow .2s;cursor:pointer;}
+.fi:focus,.fs:focus{border-color:var(--g1);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
+.fs option{background:var(--bg4);}
+.fi::placeholder{color:var(--text4);}
+.time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-height:190px;overflow-y:auto;padding-right:2px;scrollbar-width:thin;scrollbar-color:var(--g1) transparent;}
+@media(max-width:360px){.time-grid{grid-template-columns:repeat(3,1fr);}}
+.t-btn{padding:10px 4px;background:var(--bg4);border:1px solid var(--border);color:var(--text3);font-family:var(--font-mono);font-size:11px;cursor:pointer;text-align:center;border-radius:var(--r);transition:all .2s;}
+.t-btn:hover:not(.taken){border-color:var(--g1);color:var(--g1);background:rgba(201,168,76,.05);}
+.t-btn.selected{background:var(--g1);color:var(--bg);border-color:var(--g1);font-weight:700;}
+.t-btn.taken{background:rgba(224,52,32,.05);border-color:rgba(224,52,32,.2);color:rgba(255,255,255,.15);text-decoration:line-through;cursor:not-allowed;pointer-events:none;}
+.t-empty{grid-column:1/-1;color:var(--text4);font-size:12px;text-align:center;padding:18px;letter-spacing:1px;}
+.m-foot{padding:14px 24px 22px;border-top:1px solid var(--border);}
+.btn-confirm{width:100%;padding:15px;background:linear-gradient(135deg,var(--g-d),var(--g1));border:none;color:var(--bg);font-family:var(--font-body);font-weight:800;font-size:14px;letter-spacing:4px;cursor:pointer;border-radius:var(--r);transition:opacity .2s,transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:9px;}
+.btn-confirm:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.35);}
+.btn-confirm:active{transform:scale(.98);}
+.m-summary{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--text3);line-height:1.8;letter-spacing:.5px;min-height:54px;}
+.m-summary strong{color:var(--g1);}
+.m-summary.empty{color:var(--text4);font-style:italic;}
+
+/* ═══ TOAST ═══ */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface);border:1px solid var(--g1);border-left:3px solid var(--g1);padding:14px 22px;z-index:11000;transition:transform .45s cubic-bezier(.4,0,.2,1);min-width:240px;max-width:92vw;text-align:center;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#toast.error{border-color:var(--red);border-left-color:var(--red);}
+.t-title{font-family:var(--font-display);font-size:16px;letter-spacing:3px;color:var(--g1);}
+#toast.error .t-title{color:var(--red);}
+.t-body{font-size:12px;color:var(--text3);margin-top:4px;letter-spacing:.5px;}
+
+/* ═══ TESTIMONIOS ═══ */
+#testimonios{background:var(--bg);}
+#testimonios::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;}
+.test-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:clamp(18px,4vw,26px);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;}
+.test-card::before{content:'\201C';position:absolute;top:-10px;right:16px;font-family:var(--font-serif);font-size:100px;color:rgba(201,168,76,.07);line-height:1;pointer-events:none;}
+.test-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:var(--border2);}
+.test-stars{display:flex;gap:3px;margin-bottom:12px;}
+.test-stars span{color:var(--g1);font-size:13px;}
+.test-text{font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:16px;}
+.test-author{display:flex;align-items:center;gap:10px;}
+.test-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g-d),var(--g1));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:14px;color:var(--bg);flex-shrink:0;}
+.test-name{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.test-service{font-size:10px;color:var(--text4);letter-spacing:1px;font-family:var(--font-mono);}
+
+/* ═══ UBICACION ═══ */
+#ubicacion{background:var(--bg2);}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,52px);align-items:start;}
+@media(max-width:680px){.loc-grid{grid-template-columns:1fr;}}
+.map-wrap{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.map-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent);pointer-events:none;z-index:1;}
+.map-badge{position:absolute;top:12px;left:12px;z-index:2;background:var(--g1);color:var(--bg);font-family:var(--font-display);font-size:10px;letter-spacing:3px;padding:5px 12px;border-radius:3px;box-shadow:0 2px 10px rgba(0,0,0,.3);}
+.map-wrap iframe{width:100%;aspect-ratio:4/3;border:none;display:block;filter:grayscale(20%) brightness(.9);}
+.loc-details h3{font-family:var(--font-display);font-size:clamp(28px,5vw,40px);letter-spacing:2px;color:var(--g1);margin-bottom:18px;}
+.loc-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);}
+.loc-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.loc-txt{font-size:14px;color:var(--text2);line-height:1.6;}
+.loc-txt a{color:var(--g1);text-decoration:none;}
+.hours-grid{margin-top:16px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.hr-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
+.hr-row:last-child{border-bottom:none;}
+.hr-row.today{background:rgba(201,168,76,.06);border-left:2px solid var(--g1);}
+.hr-day{font-size:12px;letter-spacing:2px;color:var(--text3);font-weight:600;}
+.hr-time{font-family:var(--font-mono);font-size:11px;color:var(--g1);}
+.hr-closed{color:var(--text4);}
+.loc-cta{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ═══ PRODUCTOS ═══ */
+#productos{background:var(--bg3);}
+.prd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:14px;}
+.prd-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;cursor:default;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;}
+.prd-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.2);border-color:var(--border2);}
+.prd-img-w{aspect-ratio:1;overflow:hidden;position:relative;}
+.prd-badge{position:absolute;top:8px;right:8px;z-index:1;background:var(--g1);color:var(--bg);font-family:var(--font-display);font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:2px;}
+.prd-img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.9);transition:transform .5s,filter .35s;}
+.prd-card:hover .prd-img{transform:scale(1.1);filter:saturate(1) brightness(1);}
+.prd-body{padding:12px 14px 14px;}
+.prd-brand{font-size:9px;letter-spacing:3px;color:var(--g1);margin-bottom:3px;}
+.prd-name{font-family:var(--font-display);font-size:17px;letter-spacing:1px;color:var(--text);margin-bottom:6px;}
+.prd-desc{font-size:11px;color:var(--text3);line-height:1.6;margin-bottom:11px;font-weight:400;}
+.prd-buy{width:100%;padding:9px;background:transparent;border:1px solid var(--border2);color:var(--text2);font-family:var(--font-body);font-size:11px;letter-spacing:3px;cursor:pointer;border-radius:var(--r);font-weight:700;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.prd-buy:hover{background:var(--g1);color:var(--bg);border-color:var(--g1);}
+.prd-buy:active{transform:scale(.97);}
+
+/* ═══ REDES ═══ */
+#redes{background:var(--bg2);}
+.soc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:14px;}
+.soc-card{padding:clamp(18px,4vw,24px);background:var(--surface);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text);cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.soc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g1),transparent);transform:scaleX(0);transition:transform .35s;}
+.soc-card:hover::after{transform:scaleX(1);}
+.soc-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.35);border-color:var(--border2);}
+.soc-ico-w{width:44px;height:44px;border:1px solid var(--border2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:all .3s;}
+.soc-card:hover .soc-ico-w{background:rgba(201,168,76,.1);border-color:var(--g1);}
+.soc-name{font-family:var(--font-display);font-size:18px;letter-spacing:2px;}
+.soc-handle{font-size:11px;color:var(--g1);font-family:var(--font-mono);margin-top:2px;}
+
+/* ═══ ADMIN ═══ */
+.adm-trigger{position:fixed;bottom:78px;right:18px;z-index:4000;width:38px;height:38px;background:var(--surface);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.3);color:var(--text4);}
+.adm-trigger:hover{border-color:var(--g1);color:var(--g1);}
+#adm-login,#adm-panel{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:16px;}
+#adm-login.open,#adm-panel.open{display:flex;}
+.lg-box{background:var(--surface);border:1px solid var(--border2);border-radius:8px;width:100%;max-width:320px;padding:clamp(24px,6vw,40px);box-shadow:0 24px 70px rgba(0,0,0,.5);}
+.lg-box::before{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent,var(--g1),transparent);margin:-1px -1px 24px;border-radius:8px 8px 0 0;}
+.lg-ttl{font-family:var(--font-display);font-size:22px;letter-spacing:5px;color:var(--g1);text-align:center;margin-bottom:22px;}
+.lg-err{font-size:12px;color:var(--red);margin-top:8px;display:none;text-align:center;letter-spacing:1px;}
+.lg-actions{margin-top:16px;display:flex;gap:10px;}
+.adm-box{background:var(--surface);border:1px solid var(--border2);border-radius:8px;width:100%;max-width:680px;max-height:90dvh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,.5);}
+.adm-head{padding:18px 24px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:10;}
+.adm-ttl{font-family:var(--font-display);font-size:18px;letter-spacing:4px;color:var(--g1);}
+.adm-body{padding:20px 24px;}
+.adm-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px;}
+@media(max-width:560px){.adm-row{grid-template-columns:1fr 1fr;}}
+.adm-seclabel{font-size:10px;letter-spacing:5px;color:var(--g1);margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+.adm-seclabel::before{content:'';flex:1;height:1px;background:var(--border);}
+.adm-blocked-item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 14px;background:rgba(224,52,32,.05);border:1px solid rgba(224,52,32,.2);border-left:3px solid var(--red);border-radius:var(--r);margin-bottom:8px;font-family:var(--font-mono);font-size:11px;color:var(--text3);}
+.adm-bk-item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 14px;background:rgba(201,168,76,.04);border:1px solid var(--border);border-left:3px solid var(--g1);border-radius:var(--r);margin-bottom:8px;font-size:12px;color:var(--text3);}
+.adm-del{background:transparent;border:1px solid rgba(224,52,32,.4);color:var(--red);font-size:11px;padding:4px 10px;cursor:pointer;border-radius:2px;font-family:var(--font-body);letter-spacing:1px;font-weight:700;transition:all .2s;}
+.adm-del:hover{background:var(--red);color:white;border-color:var(--red);}
+.adm-empty{color:var(--text4);font-size:12px;letter-spacing:1px;padding:8px 0;}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:clamp(36px,6vw,56px) 24px;text-align:center;position:relative;overflow:hidden;}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g1),transparent);}
+.ft-bolt{font-size:36px;filter:drop-shadow(0 0 18px var(--g1));margin-bottom:10px;display:block;}
+.ft-logo{font-family:var(--font-display);font-size:32px;letter-spacing:6px;color:var(--g1);}
+.ft-studio{font-size:10px;letter-spacing:8px;color:var(--text4);margin-top:4px;}
+.ft-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--g1),transparent);margin:20px auto;}
+.ft-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:18px;}
+.ft-links a{font-size:11px;letter-spacing:3px;color:var(--text4);text-decoration:none;transition:color .2s;}
+.ft-links a:hover{color:var(--g1);}
+.ft-copy{font-size:10px;color:var(--text4);letter-spacing:1px;opacity:.5;}
+
+/* ═══ FLOATING BUTTONS ═══ */
+.wa-float{position:fixed;bottom:18px;right:64px;z-index:4000;width:44px;height:44px;background:linear-gradient(135deg,#0a7a6e,#1aab7a);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 18px rgba(26,171,122,.4);transition:all .2s;animation:wa-pulse 3s ease-in-out infinite;}
+.wa-float:hover{transform:scale(1.12);box-shadow:0 6px 28px rgba(26,171,122,.6);}
+@keyframes wa-pulse{0%,100%{box-shadow:0 4px 18px rgba(26,171,122,.4);}50%{box-shadow:0 4px 28px rgba(26,171,122,.7),0 0 0 8px rgba(26,171,122,.1);}}
+
+.scroll-top{position:fixed;bottom:18px;right:18px;z-index:4000;width:38px;height:38px;background:var(--surface);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.3);color:var(--g1);opacity:0;pointer-events:none;transform:translateY(10px);}
+.scroll-top.visible{opacity:1;pointer-events:auto;transform:none;}
+.scroll-top:hover{background:var(--g1);color:var(--bg);border-color:var(--g1);}
+
+/* ═══ REVEAL ═══ */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
+.rv.in{opacity:1;transform:none;}
+.rd1{transition-delay:.07s;}.rd2{transition-delay:.14s;}.rd3{transition-delay:.21s;}.rd4{transition-delay:.28s;}
+
+/* ═══ EXTRA ANIMATIONS ═══ */
+@keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
+.gold-shimmer{background:linear-gradient(90deg,var(--g-d),var(--g1),var(--g2),var(--g1),var(--g-d));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
+
+@keyframes float-particle{0%{transform:translateY(0) translateX(0) scale(1);opacity:0;}10%{opacity:.6;}90%{opacity:.2;}100%{transform:translateY(-120px) translateX(calc(var(--dx)*60px)) scale(.3);opacity:0;}}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--g1);pointer-events:none;animation:float-particle 4s ease-in-out infinite;}
+
+/* Section entrance shimmer line */
+section::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--g-d),var(--g2));transition:width 1.2s ease;}
+section.in-view::after{width:100%;}
+
+/* Glowing border pulse for booking section */
+@keyframes border-glow{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0);}50%{box-shadow:0 0 0 4px rgba(201,168,76,.08),0 0 30px rgba(201,168,76,.05);}}
+.booking-wrap{animation:border-glow 4s ease-in-out infinite;}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--g-d);border-radius:2px;}
+
+/* ═══ MOBILE ═══ */
+@media(max-width:500px){
+  .m-body,.m-foot,.m-head,.adm-body,.adm-head{padding-left:16px;padding-right:16px;}
+  .lg-box{padding:22px 18px;}
+  .hero-corner{display:none;}
+  .btn-primary,.btn-secondary{padding:12px 20px;font-size:11px;letter-spacing:3px;}
+  .wa-float{right:64px;}
+  .bk-barbers{grid-template-columns:repeat(2,1fr);}
+  .bk-time-grid{grid-template-columns:repeat(3,1fr);}
+  .bk-left,.bk-right{padding:18px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-bolt">⚡</div>
+  <div class="ld-name">THUNDERBARBER STUDIO</div>
+  <div class="ld-track"><div class="ld-fill"></div></div>
+</div>
+
+<!-- CURSORS -->
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- AVAILABILITY OVERLAY -->
+<div id="avail-overlay">
+  <div class="avail-icon">⚡</div>
+  <div class="avail-title">VERIFICANDO DISPONIBILIDAD</div>
+  <div class="avail-dots">
+    <div class="avail-dot"></div>
+    <div class="avail-dot"></div>
+    <div class="avail-dot"></div>
+  </div>
+  <div class="avail-sub">Preparando tu cita…</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#inicio" class="nav-logo"><span>⚡</span> THUNDERBARBER</a>
+  <ul class="nav-links">
+    <li><a href="#servicios">SERVICIOS</a></li>
+    <li><a href="#barberos">BARBEROS</a></li>
+    <li><a href="#reserva">RESERVAR</a></li>
+    <li><a href="#productos">PRODUCTOS</a></li>
+    <li><a href="#redes">REDES</a></li>
+    <li><a href="#ubicacion">UBICACIÓN</a></li>
+  </ul>
+  <button type="button" id="ham" onclick="toggleMenu()" aria-label="Menú">
+    <div class="hb"></div><div class="hb"></div><div class="hb"></div>
+  </button>
+</nav>
+
+<!-- OVERLAY -->
+<div id="mob-ov" onclick="closeMenu()"></div>
+
+<!-- SIDE MENU -->
+<nav id="mob-menu">
+  <a href="#inicio" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">🏠</span>INICIO</a>
+  <a href="#servicios" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">✂️</span>SERVICIOS</a>
+  <a href="#barberos" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">💈</span>BARBEROS</a>
+  <a href="#reserva" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">📆</span>RESERVAR CITA</a>
+  <a href="#productos" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">🧴</span>PRODUCTOS</a>
+  <a href="#testimonios" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">⭐</span>RESEÑAS</a>
+  <a href="#redes" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">📱</span>REDES SOCIALES</a>
+  <a href="#ubicacion" class="mob-lnk" onclick="closeMenu()"><span class="mob-lnk-ico">📍</span>UBICACIÓN</a>
+  <div class="mob-soc">
+    <a href="https://instagram.com/thunderbarberstudio" target="_blank" class="msoc-btn">📸</a>
+    <a href="https://facebook.com/thunderbarber" target="_blank" class="msoc-btn">👤</a>
+    <a href="https://wa.me/523325983247" target="_blank" class="msoc-btn">💬</a>
+    <a href="https://tiktok.com/@thunder.barber.es" target="_blank" class="msoc-btn">🎵</a>
+  </div>
+</nav>
+
+<!-- ╔═ HERO ═╗ -->
+<section id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-vlines"></div>
+  <div class="hero-hlines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-corner tl"></div>
+  <div class="hero-corner tr"></div>
+  <div class="hero-corner bl"></div>
+  <div class="hero-corner br"></div>
+  <div class="hero-inner">
+    <div id="status-hero" class="status-badge open"><span class="status-dot"></span><span id="status-text">ABIERTO AHORA</span></div>
+    <div class="hero-eyebrow">ZONA ANDARES · LOBBY 33 · ZAPOPAN</div>
+    <span class="hero-bolt">⚡</span>
+    <span class="hero-t1 gold-text">THUNDER</span>
+    <span class="hero-t2">BARBER</span>
+    <p class="hero-studio">S T U D I O</p>
+    <div class="hero-sep"></div>
+    <p class="hero-tag">Cortes de precisión. Experiencia sin igual.</p>
+    <div class="hero-cta">
+      <a href="#reserva" class="btn-primary"><span>⚡ AGENDAR CITA</span></a>
+      <a href="#servicios" class="btn-secondary"><span>VER SERVICIOS</span></a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>SCROLL</span><div class="scroll-arr"></div></div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ SERVICIOS ═╗ -->
+<section id="servicios">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">LO QUE HACEMOS</p>
+      <h2 class="sec-title">SERVICIOS</h2>
+      <p class="sec-sub">Cada servicio diseñado para tu mejor versión.</p>
+    </div>
+    <div class="srv-grid">
+      <div class="srv-card rv rd1">
+        <div class="srv-card-line"></div>
+        <div class="srv-num">01</div>
+        <span class="srv-ico">✂️</span>
+        <div class="srv-name">CORTE</div>
+        <div class="srv-price">$350 <small>MXN</small></div>
+        <div class="srv-desc">Corte personalizado adaptado a tu estilo. Lavado, corte con tijera o máquina, definición de líneas y secado profesional.</div>
+        <div class="srv-time">⏱ 30 – 45 MIN</div>
+        <button type="button" class="srv-btn" onclick="scrollToBook()">⚡ RESERVAR</button>
+      </div>
+      <div class="srv-card rv rd2">
+        <div class="srv-card-line"></div>
+        <div class="srv-num">02</div>
+        <span class="srv-ico">💈</span>
+        <div class="srv-name">CORTE + BARBA</div>
+        <div class="srv-price">$550 <small>MXN</small></div>
+        <div class="srv-desc">Combo completo: corte personalizado más perfilado y arreglo de barba con navaja, definición y acabado con aceites.</div>
+        <div class="srv-time">⏱ 50 – 70 MIN</div>
+        <button type="button" class="srv-btn" onclick="scrollToBook()">⚡ RESERVAR</button>
+      </div>
+      <div class="srv-card vip rv rd3">
+        <div class="srv-card-line"></div>
+        <div class="srv-vip-badge">VIP</div>
+        <div class="srv-num">03</div>
+        <span class="srv-ico">👑</span>
+        <div class="srv-name">CORTE VIP THUNDER</div>
+        <div class="srv-price">$750 <small>MXN</small></div>
+        <div class="srv-desc">Experiencia premium total: corte, barba, toalla caliente, masaje capilar, tratamiento profundo y bebida de cortesía.</div>
+        <div class="srv-time">⏱ 80 – 100 MIN</div>
+        <button type="button" class="srv-btn" onclick="scrollToBook()">⚡ RESERVAR VIP</button>
+      </div>
+      <div class="srv-card rv rd4">
+        <div class="srv-card-line"></div>
+        <div class="srv-num">04</div>
+        <span class="srv-ico">🪒</span>
+        <div class="srv-name">BARBA</div>
+        <div class="srv-price">$350 <small>MXN</small></div>
+        <div class="srv-desc">Diseño y arreglo de barba: perfilado con navaja, definición de contornos, hidratación con aceites y bálsamo post-afeitado.</div>
+        <div class="srv-time">⏱ 25 – 35 MIN</div>
+        <button type="button" class="srv-btn" onclick="scrollToBook()">⚡ RESERVAR</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ BARBEROS ═╗ -->
+<section id="barberos">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">NUESTRO EQUIPO</p>
+      <h2 class="sec-title">LOS BARBEROS</h2>
+      <p class="sec-sub">Maestros del oficio con años de experiencia.</p>
+    </div>
+    <div class="brb-grid">
+      <div class="brb-card rv rd1">
+        <div class="brb-img-w">
+          <div class="brb-num">01 / MASTER</div>
+          <img class="brb-img" src="https://i.postimg.cc/9FnKYKqj/5091689236016073808.jpg" alt="Álvaro" loading="lazy">
+        </div>
+        <div class="brb-info">
+          <div class="brb-name">ÁLVARO</div>
+          <div class="brb-role">MASTER BARBER</div>
+          <div class="brb-exp">8 años de experiencia</div>
+          <button type="button" class="brb-btn" onclick="bookBarber('Álvaro')">⚡ AGENDAR CON ÁLVARO</button>
+        </div>
+      </div>
+      <div class="brb-card rv rd2">
+        <div class="brb-img-w">
+          <div class="brb-num">02 / SENIOR</div>
+          <img class="brb-img" src="https://i.postimg.cc/28KM7MBN/5091689236016073803.jpg" alt="Sol" loading="lazy">
+        </div>
+        <div class="brb-info">
+          <div class="brb-name">SOL</div>
+          <div class="brb-role">SENIOR BARBER</div>
+          <div class="brb-exp">5 años de experiencia</div>
+          <button type="button" class="brb-btn" onclick="bookBarber('Sol')">⚡ AGENDAR CON SOL</button>
+        </div>
+      </div>
+      <div class="brb-card rv rd3">
+        <div class="brb-img-w">
+          <div class="brb-num">03 / STYLIST</div>
+          <img class="brb-img" src="https://i.postimg.cc/hP56167B/5091689236016073807.jpg" alt="Daniel" loading="lazy">
+        </div>
+        <div class="brb-info">
+          <div class="brb-name">DANIEL</div>
+          <div class="brb-role">BARBER STYLIST</div>
+          <div class="brb-exp">6 años de experiencia</div>
+          <button type="button" class="brb-btn" onclick="bookBarber('Daniel')">⚡ AGENDAR CON DANIEL</button>
+        </div>
+      </div>
+      <div class="brb-card rv rd4">
+        <div class="brb-img-w">
+          <div class="brb-num">04 / ARTIST</div>
+          <img class="brb-img" src="https://i.postimg.cc/7Y6j7wbr/5091689236016073805.jpg" alt="Caleb" loading="lazy">
+        </div>
+        <div class="brb-info">
+          <div class="brb-name">CALEB</div>
+          <div class="brb-role">BARBER ARTIST</div>
+          <div class="brb-exp">4 años de experiencia</div>
+          <button type="button" class="brb-btn" onclick="bookBarber('Caleb')">⚡ AGENDAR CON CALEB</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ RESERVA — CALENDARIO MANUAL ═╗ -->
+<section id="reserva">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">AGENDA EN LÍNEA</p>
+      <h2 class="sec-title">RESERVA TU CITA</h2>
+      <p class="sec-sub">Elige tu barbero, día y horario preferido.</p>
+    </div>
+
+    <div class="booking-wrap rv">
+      <div class="bk-layout">
+
+        <!-- LEFT: Calendar -->
+        <div class="bk-left">
+          <div class="bk-cal-header">
+            <button type="button" class="bk-nav-btn" id="bk-prev" onclick="calNav(-1)">‹</button>
+            <div class="bk-month-label" id="bk-month-label">ENERO 2025</div>
+            <button type="button" class="bk-nav-btn" id="bk-next" onclick="calNav(1)">›</button>
+          </div>
+          <div class="bk-weekdays">
+            <div class="bk-wd">DOM</div>
+            <div class="bk-wd">LUN</div>
+            <div class="bk-wd">MAR</div>
+            <div class="bk-wd">MIÉ</div>
+            <div class="bk-wd">JUE</div>
+            <div class="bk-wd">VIE</div>
+            <div class="bk-wd">SÁB</div>
+          </div>
+          <div class="bk-days" id="bk-days"></div>
+          <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text4);">
+              <span style="width:10px;height:10px;border-radius:2px;background:var(--g1);display:inline-block;"></span> Seleccionado
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text4);">
+              <span style="width:10px;height:10px;border-radius:50%;background:var(--g1);display:inline-block;"></span> Hoy
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text4);">
+              <span style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:inline-block;opacity:.4;"></span> No disponible
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Form -->
+        <div class="bk-right">
+
+          <!-- Barber -->
+          <div style="margin-bottom:20px;">
+            <div class="bk-section-title">SELECCIONA BARBERO</div>
+            <div class="bk-barbers" id="bk-barbers">
+              <button type="button" class="bk-brb-btn" data-barber="Álvaro" onclick="selectBarber(this)">
+                <span class="bk-brb-name">ÁLVARO</span>
+                <span class="bk-brb-role">MASTER BARBER</span>
+              </button>
+              <button type="button" class="bk-brb-btn" data-barber="Sol" onclick="selectBarber(this)">
+                <span class="bk-brb-name">SOL</span>
+                <span class="bk-brb-role">SENIOR BARBER</span>
+              </button>
+              <button type="button" class="bk-brb-btn" data-barber="Daniel" onclick="selectBarber(this)">
+                <span class="bk-brb-name">DANIEL</span>
+                <span class="bk-brb-role">BARBER STYLIST</span>
+              </button>
+              <button type="button" class="bk-brb-btn" data-barber="Caleb" onclick="selectBarber(this)">
+                <span class="bk-brb-name">CALEB</span>
+                <span class="bk-brb-role">BARBER ARTIST</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Time slots -->
+          <div style="margin-bottom:20px;">
+            <div class="bk-section-title" id="bk-time-label">SELECCIONA HORARIO</div>
+            <div class="bk-time-grid" id="bk-time-slots">
+              <div class="bk-t-empty">← Selecciona una fecha para ver horarios</div>
+            </div>
+          </div>
+
+          <!-- Personal info -->
+          <div style="margin-bottom:18px;">
+            <div class="bk-section-title">TUS DATOS</div>
+            <div class="bk-fields">
+              <div class="bk-fg">
+                <label class="bk-label">NOMBRE</label>
+                <input type="text" class="bk-input" id="bk-nombre" placeholder="Tu nombre" autocomplete="given-name">
+              </div>
+              <div class="bk-fg">
+                <label class="bk-label">APELLIDO</label>
+                <input type="text" class="bk-input" id="bk-apellido" placeholder="Tu apellido" autocomplete="family-name">
+              </div>
+              <div class="bk-fg bk-phone-wrap">
+                <label class="bk-label">TELÉFONO</label>
+                <input type="tel" class="bk-input" id="bk-telefono" placeholder="+52 33 0000 0000" autocomplete="tel">
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="bk-summary empty" id="bk-summary">
+            Completa los campos para ver el resumen de tu cita.
+          </div>
+
+          <!-- Confirm -->
+          <button type="button" class="btn-confirm-main" id="bk-confirm-btn" onclick="confirmBooking()">
+            <span>⚡ RESERVAR CITA</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ PRODUCTOS ═╗ -->
+<section id="productos">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">PARA TU ESTILO</p>
+      <h2 class="sec-title">PRODUCTOS</h2>
+      <p class="sec-sub">Las mejores marcas del mundo del grooming.</p>
+    </div>
+    <div class="prd-grid">
+      <div class="prd-card rv rd1">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/85DJjy13/5091689236016073793.jpg" alt="Pomada" loading="lazy"><div class="prd-badge">BESTSELLER</div></div>
+        <div class="prd-body"><div class="prd-brand">THUNDER LABS</div><div class="prd-name">Polvo Texturizador</div><div class="prd-desc">Volumen radical y acabado mate instantáneo. Textura ligera sin residuos para un control total.</div><button type="button" class="prd-buy" onclick="buyProduct('Pomada Fijadora Thunder Labs')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd2">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/FRmd7Prf/5091689236016073786.jpg" alt="Aceite" loading="lazy"></div>
+        <div class="prd-body"><div class="prd-brand">THUNDER LABS</div><div class="prd-name">Shaving Gel</div><div class="prd-desc">Transparencia total para un delineado perfecto. Máximo deslizamiento, hidratación y frescura sin espuma.</div><button type="button" class="prd-buy" onclick="buyProduct('Aceite de Barba Thunder Labs')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd3">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/cHZgrDxZ/5091689236016073788.jpg" alt="Cera" loading="lazy"><div class="prd-badge">NUEVO</div></div>
+        <div class="prd-body"><div class="prd-brand">LAYRITE</div><div class="prd-name">Beard Balm</div><div class="prd-desc">Hidratación profunda y control total de la barba. Suaviza el vello rebelde, aporta un brillo natural y calma la irritación de la piel.</div><button type="button" class="prd-buy" onclick="buyProduct('Cera Texturizante Layrite')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd4">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/vBMgcPYR/5091689236016073791.jpg" alt="Champú" loading="lazy"></div>
+        <div class="prd-body"><div class="prd-brand">L3VEL3</div><div class="prd-name">Hear Gel</div><div class="prd-desc">Fijación extrema y brillo intenso durante todo el día. Fórmula sin residuos que aporta volumen y control total para peinados estructurados.</div><button type="button" class="prd-buy" onclick="buyProduct('Champú Anticaspa American Crew')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd1">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/mr71ZxsG/5091689236016073792.jpg" alt="Bálsamo" loading="lazy"></div>
+        <div class="prd-body"><div class="prd-brand">L3VEL3</div><div class="prd-name">Cream Gel</div><div class="prd-desc">Equilibrio perfecto entre fijación y flexibilidad. Aporta volumen con un brillo natural y manejabilidad sin dejar el cabello rígido.</div><button type="button" class="prd-buy" onclick="buyProduct('Bálsamo Post-Afeitado Proraso')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd2">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/MG1fZkSJ/5091689236016073794.jpg" alt="Spray" loading="lazy"><div class="prd-badge">NUEVO</div></div>
+        <div class="prd-body"><div class="prd-brand">L3VEL3</div><div class="prd-name">Hair Fiber Spray</div><div class="prd-desc">Fijación máxima para fibras capilares. Asegura las fibras al cabello, resiste el viento y el sudor, y garantiza una apariencia natural y duradera.</div><button type="button" class="prd-buy" onclick="buyProduct('Spray Fijador Redken')">🛒 COMPRAR</button></div>
+      </div>
+      <div class="prd-card rv rd3">
+        <div class="prd-img-w"><img class="prd-img" src="https://i.postimg.cc/RZknzS24/5091689236016073796.jpg" alt="Navaja" loading="lazy"></div>
+        <div class="prd-body"><div class="prd-brand">L3VEL3</div><div class="prd-name">Texturizing Salt Spray</div><div class="prd-desc">Volumen natural con efecto playero y acabado mate. Define las ondas y aporta textura despeinada sin endurecer el cabello.</div><button type="button" class="prd-buy" onclick="buyProduct('Navaja Clásica DOVO')">🛒 COMPRAR</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ TESTIMONIOS ═╗ -->
+<section id="testimonios">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">LO QUE DICEN</p>
+      <h2 class="sec-title">RESEÑAS</h2>
+      <p class="sec-sub">La experiencia habla por sí sola.</p>
+    </div>
+    <div class="test-grid">
+      <div class="test-card rv rd1">
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="test-text">"El mejor corte que me han hecho en años. Álvaro entendió exactamente lo que quería sin que yo tuviera que explicar mucho. El ambiente del lugar es increíble."</p>
+        <div class="test-author"><div class="test-avatar">JM</div><div><div class="test-name">JORGE M.</div><div class="test-service">Corte VIP Thunder</div></div></div>
+      </div>
+      <div class="test-card rv rd2">
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="test-text">"Vine por la barba y salí con corte también. Sol es un artista. El lugar está súper bien ubicado en Andares y la atención es de primera. Ya no voy a otro lado."</p>
+        <div class="test-author"><div class="test-avatar">RA</div><div><div class="test-name">RODRIGO A.</div><div class="test-service">Corte + Barba</div></div></div>
+      </div>
+      <div class="test-card rv rd3">
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="test-text">"La experiencia VIP vale cada peso. Toalla caliente, masaje, bebida... uno se siente tratado como rey. Daniel tiene manos mágicas. 100% recomendado."</p>
+        <div class="test-author"><div class="test-avatar">CF</div><div><div class="test-name">CARLOS F.</div><div class="test-service">Corte VIP Thunder</div></div></div>
+      </div>
+      <div class="test-card rv rd4">
+        <div class="test-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="test-text">"Agendé por WhatsApp en segundos. Caleb es muy preciso con las líneas y el fade quedó perfecto. El estudio tiene un estilo único, muy cool."</p>
+        <div class="test-author"><div class="test-avatar">LV</div><div><div class="test-name">LUIS V.</div><div class="test-service">Corte · Fade</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ UBICACION ═╗ -->
+<section id="ubicacion">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">ENCUÉNTRANOS</p>
+      <h2 class="sec-title">UBICACIÓN</h2>
+      <p class="sec-sub">En el corazón de Zona Andares, Zapopan.</p>
+    </div>
+    <div class="loc-grid">
+      <div class="map-wrap rv">
+        <div class="map-badge">⚡ THUNDERBARBER STUDIO</div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.025510132508!2d-103.4120142250935!3d20.70918868086133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428afee04dc62ad%3A0x8274e0505c0cb28b!2sTHUNDER%20BARBER%20STUDIO!5e0!3m2!1ses-419!2smx!4v1774459929186!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa ThunderBarber Studio"></iframe>
+      </div>
+      <div class="rv rd2">
+        <div class="loc-details">
+          <h3>LOBBY 33</h3>
+          <div class="loc-item"><span class="loc-ico">📍</span><span class="loc-txt">ThunderBarber Studio, Lobby 33,<br>Zona Andares, Zapopan, Jalisco</span></div>
+          <div class="loc-item"><span class="loc-ico">💬</span><span class="loc-txt"><a href="https://wa.me/523325983247">+52 33 2598 3247</a></span></div>
+          <div class="loc-item"><span class="loc-ico">📸</span><span class="loc-txt"><a href="https://instagram.com/thunderbarberstudio" target="_blank">@thunderbarberstudio</a></span></div>
+          <div class="hours-grid" id="hours-grid">
+            <div class="hr-row" data-days="1,2,3,4,5"><span class="hr-day">LUN – VIE</span><span class="hr-time">09:00 – 20:00</span></div>
+            <div class="hr-row" data-days="6"><span class="hr-day">SÁBADO</span><span class="hr-time">09:00 – 19:00</span></div>
+            <div class="hr-row" data-days="0"><span class="hr-day">DOMINGO</span><span class="hr-time">10:00 – 16:00</span></div>
+            <div class="hr-row"><span class="hr-day" style="font-size:10px;color:var(--text4);">⚡ Última cita 19:00 hrs</span><span class="hr-time hr-closed">—</span></div>
+          </div>
+          <div class="loc-cta">
+            <a href="https://wa.me/523325983247" target="_blank" class="btn-primary" style="background:linear-gradient(135deg,#0a7a6e,#1aab7a)"><span>💬 WHATSAPP</span></a>
+            <a href="#reserva" class="btn-ghost"><span>⚡ AGENDAR</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-rule"></div>
+
+<!-- ╔═ REDES ═╗ -->
+<section id="redes">
+  <div class="cont">
+    <div class="sec-head rv">
+      <p class="sec-label">SÍGUENOS</p>
+      <h2 class="sec-title">REDES SOCIALES</h2>
+      <p class="sec-sub">Mantente al día con nuestro trabajo.</p>
+    </div>
+    <div class="soc-grid">
+      <a href="https://instagram.com/thunderbarberstudio" target="_blank" class="soc-card rv rd1">
+        <div class="soc-ico-w">📸</div><div><div class="soc-name">INSTAGRAM</div><div class="soc-handle">@thunderbarberstudio</div></div>
+      </a>
+      <a href="https://facebook.com/thunderbarber" target="_blank" class="soc-card rv rd2">
+        <div class="soc-ico-w">👤</div><div><div class="soc-name">FACEBOOK</div><div class="soc-handle">@thunderbarber</div></div>
+      </a>
+      <a href="https://wa.me/523325983247" target="_blank" class="soc-card rv rd3">
+        <div class="soc-ico-w">💬</div><div><div class="soc-name">WHATSAPP</div><div class="soc-handle">+52 33 2598 3247</div></div>
+      </a>
+      <a href="https://tiktok.com/@thunder.barber.es" target="_blank" class="soc-card rv rd4">
+        <div class="soc-ico-w">🎵</div><div><div class="soc-name">TIKTOK</div><div class="soc-handle">@thunder.barber.es</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="ft-bolt">⚡</span>
+  <div class="ft-logo">THUNDERBARBER</div>
+  <div class="ft-studio">S T U D I O · Z O N A  A N D A R E S</div>
+  <div class="ft-divider"></div>
+  <div class="ft-links">
+    <a href="#inicio">INICIO</a>
+    <a href="#servicios">SERVICIOS</a>
+    <a href="#barberos">BARBEROS</a>
+    <a href="#reserva">RESERVAR</a>
+    <a href="#productos">PRODUCTOS</a>
+    <a href="#testimonios">RESEÑAS</a>
+    <a href="#ubicacion">UBICACIÓN</a>
+  </div>
+  <div class="ft-copy">© 2025 ThunderBarber Studio — Todos los derechos reservados.</div>
+</footer>
+
+<!-- ADMIN TRIGGER -->
+<button type="button" class="adm-trigger" onclick="openAdmLogin()" title="Panel Admin">🔐</button>
+
+<!-- WhatsApp flotante -->
+<button type="button" class="wa-float" onclick="window.open('https://wa.me/523325983247','_blank')" title="Escríbenos por WhatsApp">💬</button>
+
+<!-- Scroll to top -->
+<button type="button" class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">▲</button>
+
+<!-- ADMIN LOGIN -->
+<div id="adm-login">
+  <div class="lg-box">
+    <div class="lg-ttl">🔐 ADMIN PANEL</div>
+    <div class="fg"><label class="fl">CONTRASEÑA</label><input type="password" class="fi" id="adm-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdm()"></div>
+    <div class="lg-err" id="lg-err">⚠ Contraseña incorrecta</div>
+    <div class="lg-actions">
+      <button type="button" class="btn-primary" onclick="checkAdm()" style="flex:1"><span>ENTRAR</span></button>
+      <button type="button" onclick="closeAdmLogin()" style="flex:1;padding:12px;background:transparent;border:1px solid var(--border2);color:var(--text3);font-family:var(--font-body);font-size:12px;letter-spacing:2px;cursor:pointer;border-radius:var(--r);transition:all .2s;">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adm-panel">
+  <div class="adm-box">
+    <div class="adm-head">
+      <div class="adm-ttl">🗓 GESTIÓN DE CITAS</div>
+      <button type="button" class="m-cls" onclick="closeAdm()">✕</button>
+    </div>
+    <div class="adm-body">
+      <p style="font-size:12px;color:var(--text4);margin-bottom:18px;letter-spacing:.5px;">Bloquea horarios para que no aparezcan disponibles al reservar.</p>
+      <div class="adm-row">
+        <div class="fg" style="margin:0"><label class="fl">BARBERO</label><select class="fs" id="adm-barber"><option>Álvaro</option><option>Sol</option><option>Daniel</option><option>Caleb</option></select></div>
+        <div class="fg" style="margin:0"><label class="fl">FECHA</label><input type="date" class="fi" id="adm-date"></div>
+        <div class="fg" style="margin:0"><label class="fl">HORA</label>
+          <select class="fs" id="adm-time">
+            <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option>
+            <option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option>
+            <option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option>
+            <option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option>
+            <option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option>
+            <option>19:00</option>
+          </select>
+        </div>
+        <div><label class="fl" style="opacity:0">x</label><button type="button" class="btn-primary" onclick="admBlock()" style="width:100%;padding:11px 12px"><span>BLOQUEAR</span></button></div>
+      </div>
+      <div class="adm-seclabel">HORARIOS BLOQUEADOS</div>
+      <div id="adm-taken"><div class="adm-empty">Sin horarios bloqueados.</div></div>
+      <div class="adm-seclabel">CITAS AGENDADAS</div>
+      <div id="adm-bklist"><div class="adm-empty">Sin citas registradas.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <div class="t-title" id="t-ttl">¡LISTO!</div>
+  <div class="t-body" id="t-msg">—</div>
+</div>
+
+<script>
+/* ─── CURSOR ─── */
+const dot = document.getElementById('curDot'), ring = document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('button,a,.srv-card,.brb-card,.prd-card,.soc-card,.bk-day,.bk-t-btn,.bk-brb-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+});
+
+/* ─── SOUND ─── */
+let actx;
+function blip(f=880,d=.08){
+  try{
+    if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    o.type='sine';o.frequency.setValueAtTime(f,actx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(f*.5,actx.currentTime+d);
+    g.gain.setValueAtTime(.08,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+d+.01);
+    o.start();o.stop(actx.currentTime+d+.02);
+  }catch(e){}
+}
+document.addEventListener('click',()=>blip());
+
+/* ─── LOADER ─── */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('out'),2300));
+
+/* ─── NAV SCROLL ─── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
+
+/* ─── MENU ─── */
+function toggleMenu(){
+  const open=document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mob-menu').classList.toggle('open',open);
+  document.getElementById('mob-ov').classList.toggle('open',open);
+}
+function closeMenu(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mob-menu').classList.remove('open');
+  document.getElementById('mob-ov').classList.remove('open');
+}
+
+/* ─── REVEAL ─── */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* Section in-view for line animation */
+const secObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view');}),{threshold:.05});
+document.querySelectorAll('section').forEach(el=>secObs.observe(el));
+
+/* ─── DATA ─── */
+let taken=[];let bks=[];
+try{taken=JSON.parse(localStorage.getItem('tb_taken')||'[]');}catch(e){taken=[];}
+try{bks=JSON.parse(localStorage.getItem('tb_bks')||'[]');}catch(e){bks=[];}
+function save(){
+  try{localStorage.setItem('tb_taken',JSON.stringify(taken));localStorage.setItem('tb_bks',JSON.stringify(bks));}catch(e){}
+}
+
+/* ─── STATUS ABIERTO/CERRADO ─── */
+function checkStatus(){
+  const now=new Date();
+  const day=now.getDay();
+  const h=now.getHours();
+  const m=now.getMinutes();
+  const mins=h*60+m;
+  let open=false;
+  if(day>=1&&day<=5&&mins>=540&&mins<1200)open=true;
+  else if(day===6&&mins>=540&&mins<1140)open=true;
+  else if(day===0&&mins>=600&&mins<960)open=true;
+  const badge=document.getElementById('status-hero');
+  const txt=document.getElementById('status-text');
+  if(badge&&txt){
+    badge.className='status-badge '+(open?'open':'closed');
+    txt.textContent=open?'ABIERTO AHORA':'CERRADO AHORA';
+  }
+}
+
+/* ─── HIGHLIGHT HOY ─── */
+function highlightToday(){
+  const today=new Date().getDay();
+  document.querySelectorAll('#hours-grid .hr-row[data-days]').forEach(row=>{
+    const days=row.getAttribute('data-days').split(',').map(Number);
+    row.classList.toggle('today',days.includes(today));
+  });
+}
+
+/* ─── BUY ─── */
+function buyProduct(name){
+  window.open('https://wa.me/523325983247?text='+encodeURIComponent('Hola! 👋 Vi el producto *'+name+'* en su página y me interesa comprarlo. ¿Está disponible?'),'_blank');
+}
+
+/* ─── TOAST ─── */
+function showToast(t,m,err=false){
+  const el=document.getElementById('toast');
+  document.getElementById('t-ttl').textContent=t;
+  document.getElementById('t-msg').textContent=m;
+  el.classList.toggle('error',err);
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),4500);
+}
+
+/* ─── ADMIN ─── */
+const PASS='thunder2025';
+function openAdmLogin(){document.getElementById('adm-login').classList.add('open');document.getElementById('adm-pass').value='';document.getElementById('lg-err').style.display='none';}
+function closeAdmLogin(){document.getElementById('adm-login').classList.remove('open');}
+function checkAdm(){
+  if(document.getElementById('adm-pass').value===PASS){closeAdmLogin();document.getElementById('adm-panel').classList.add('open');renderAdm();}
+  else{document.getElementById('lg-err').style.display='block';}
+}
+function closeAdm(){document.getElementById('adm-panel').classList.remove('open');}
+function admBlock(){
+  const b=document.getElementById('adm-barber').value,d=document.getElementById('adm-date').value,t=document.getElementById('adm-time').value;
+  if(!d){showToast('⚠','Selecciona una fecha',true);return;}
+  const k=b+'|'+d+'|'+t;
+  if(!taken.includes(k)){taken.push(k);save();}
+  renderAdm();
+  if(bkState.date)renderTimeSlots();
+}
+function renderAdm(){
+  document.getElementById('adm-taken').innerHTML=taken.length?taken.map((k,i)=>{const p=k.split('|');return'<div class="adm-blocked-item"><span>'+p[0]+' · '+p[1]+' · '+p[2]+'</span><button type="button" class="adm-del" onclick="delSlot('+i+')">DESBLOQUEAR</button></div>';}).join(''):'<div class="adm-empty">Sin horarios bloqueados.</div>';
+  document.getElementById('adm-bklist').innerHTML=bks.length?bks.map((b,i)=>'<div class="adm-bk-item"><div><strong style="color:var(--text)">'+b.name+'</strong> · '+b.barber+'<br><span style="font-size:11px;color:var(--text4);font-family:var(--font-mono)">'+b.date+' '+b.time+' · '+b.phone+'</span></div><button type="button" class="adm-del" onclick="delBk('+i+')">ELIMINAR</button></div>').join(''):'<div class="adm-empty">Sin citas registradas.</div>';
+}
+function delSlot(i){taken.splice(i,1);save();renderAdm();if(bkState.date)renderTimeSlots();}
+function delBk(i){bks.splice(i,1);save();renderAdm();}
+
+/* ════════════════════════════════════════════
+   MANUAL BOOKING CALENDAR
+   ════════════════════════════════════════════ */
+const MONTHS_ES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+
+const bkState={
+  year:0, month:0,
+  selectedDate:null,
+  selectedTime:null,
+  selectedBarber:null,
+  date:null
+};
+
+function initCalendar(){
+  const now=new Date();
+  bkState.year=now.getFullYear();
+  bkState.month=now.getMonth();
+  renderCalendar();
+}
+
+function calNav(dir){
+  bkState.month+=dir;
+  if(bkState.month>11){bkState.month=0;bkState.year++;}
+  if(bkState.month<0){bkState.month=11;bkState.year--;}
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const y=bkState.year, m=bkState.month;
+  document.getElementById('bk-month-label').textContent=MONTHS_ES[m]+' '+y;
+  const firstDay=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+  const grid=document.getElementById('bk-days');
+  grid.innerHTML='';
+
+  for(let i=0;i<firstDay;i++){
+    const el=document.createElement('div');
+    el.className='bk-day empty';
+    grid.appendChild(el);
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(y,m,d);
+    const dow=date.getDay();
+    const el=document.createElement('div');
+    el.className='bk-day';
+    el.textContent=d;
+    const isPast=date<today;
+    const dateStr=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    if(isPast){
+      el.classList.add('past');
+    } else {
+      el.onclick=()=>selectDate(dateStr,el);
+      if(date.getTime()===today.getTime())el.classList.add('today');
+      if(bkState.date===dateStr)el.classList.add('selected');
+    }
+    grid.appendChild(el);
+  }
+  /* Disable prev btn if showing current month */
+  const now2=new Date();
+  document.getElementById('bk-prev').style.opacity=(y===now2.getFullYear()&&m===now2.getMonth())?'.25':'1';
+  document.getElementById('bk-prev').disabled=(y===now2.getFullYear()&&m===now2.getMonth());
+}
+
+function selectDate(dateStr,el){
+  bkState.date=dateStr;
+  bkState.selectedDate=dateStr;
+  bkState.selectedTime=null;
+  document.querySelectorAll('.bk-day').forEach(d=>d.classList.remove('selected'));
+  el.classList.add('selected');
+  renderTimeSlots();
+  updateSummary();
+}
+
+function getTimeSlotsForDate(dateStr){
+  const date=new Date(dateStr+'T12:00:00');
+  const dow=date.getDay();
+  let startH,endH;
+  if(dow>=1&&dow<=5){startH=9;endH=20;}
+  else if(dow===6){startH=9;endH=19;}
+  else if(dow===0){startH=10;endH=16;}
+  else return [];
+  const slots=[];
+  for(let h=startH;h<endH;h++){
+    slots.push(String(h).padStart(2,'0')+':00');
+    if(h+.5<endH)slots.push(String(h).padStart(2,'0')+':30');
+  }
+  return slots;
+}
+
+function renderTimeSlots(){
+  const grid=document.getElementById('bk-time-slots');
+  const dateStr=bkState.date;
+  const barber=bkState.selectedBarber;
+  if(!dateStr){
+    grid.innerHTML='<div class="bk-t-empty">← Selecciona una fecha para ver horarios</div>';
+    return;
+  }
+  const slots=getTimeSlotsForDate(dateStr);
+  if(!slots.length){
+    grid.innerHTML='<div class="bk-t-empty">No hay horarios disponibles este día.</div>';
+    return;
+  }
+  const date=new Date(dateStr+'T12:00:00');
+  const dow=date.getDay();
+  const dayNames=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  document.getElementById('bk-time-label').textContent='HORARIOS — '+dayNames[dow].toUpperCase();
+  grid.innerHTML='';
+  slots.forEach(t=>{
+    const key=(barber||'*')+'|'+dateStr+'|'+t;
+    const isTaken=barber?taken.some(k=>k===barber+'|'+dateStr+'|'+t):false;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='bk-t-btn'+(isTaken?' taken':'')+(bkState.selectedTime===t?' selected':'');
+    btn.textContent=t;
+    if(!isTaken)btn.onclick=()=>selectTime(t,btn);
+    grid.appendChild(btn);
+  });
+}
+
+function selectTime(t,btn){
+  bkState.selectedTime=t;
+  document.querySelectorAll('.bk-t-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateSummary();
+}
+
+function selectBarber(btn){
+  const barber=btn.dataset.barber;
+  bkState.selectedBarber=barber;
+  document.querySelectorAll('.bk-brb-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  bkState.selectedTime=null;
+  if(bkState.date)renderTimeSlots();
+  updateSummary();
+}
+
+function bookBarber(name){
+  const btn=document.querySelector('.bk-brb-btn[data-barber="'+name+'"]');
+  if(btn)selectBarber(btn);
+  document.getElementById('reserva').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function scrollToBook(){
+  document.getElementById('reserva').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function updateSummary(){
+  const el=document.getElementById('bk-summary');
+  const n=document.getElementById('bk-nombre').value.trim();
+  const a=document.getElementById('bk-apellido').value.trim();
+  const p=document.getElementById('bk-telefono').value.trim();
+  const hasBasic=bkState.date&&bkState.selectedTime&&bkState.selectedBarber;
+  if(!hasBasic){
+    el.className='bk-summary empty';
+    el.innerHTML='Completa los campos para ver el resumen de tu cita.';
+    return;
+  }
+  const dateObj=new Date(bkState.date+'T12:00:00');
+  const dOpts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  const dateFormatted=dateObj.toLocaleDateString('es-MX',dOpts);
+  el.className='bk-summary';
+  el.innerHTML=
+    (n||a?'<strong>Cliente:</strong> '+(n+' '+a).trim()+'<br>':'')+
+    (p?'<strong>Teléfono:</strong> '+p+'<br>':'')+
+    '<strong>Barbero:</strong> '+bkState.selectedBarber+'<br>'+
+    '<strong>Fecha:</strong> '+dateFormatted+'<br>'+
+    '<strong>Hora:</strong> '+bkState.selectedTime+' hrs';
+}
+
+document.getElementById('bk-nombre').addEventListener('input',updateSummary);
+document.getElementById('bk-apellido').addEventListener('input',updateSummary);
+document.getElementById('bk-telefono').addEventListener('input',updateSummary);
+
+function confirmBooking(){
+  const nombre=document.getElementById('bk-nombre').value.trim();
+  const apellido=document.getElementById('bk-apellido').value.trim();
+  const telefono=document.getElementById('bk-telefono').value.trim();
+  if(!bkState.selectedBarber){showToast('⚠ FALTA DATO','Selecciona un barbero.',true);return;}
+  if(!bkState.date){showToast('⚠ FALTA DATO','Selecciona una fecha.',true);return;}
+  if(!bkState.selectedTime){showToast('⚠ FALTA DATO','Selecciona un horario.',true);return;}
+  if(!nombre){showToast('⚠ FALTA DATO','Ingresa tu nombre.',true);return;}
+  if(!apellido){showToast('⚠ FALTA DATO','Ingresa tu apellido.',true);return;}
+  if(!telefono){showToast('⚠ FALTA DATO','Ingresa tu número de teléfono.',true);return;}
+
+  /* Show availability animation */
+  const overlay=document.getElementById('avail-overlay');
+  overlay.classList.add('show');
+  document.body.classList.add('modal-open');
+
+  setTimeout(()=>{
+    overlay.classList.remove('show');
+    document.body.classList.remove('modal-open');
+
+    /* Save booking */
+    const bk={
+      name:nombre+' '+apellido,
+      barber:bkState.selectedBarber,
+      date:bkState.date,
+      time:bkState.selectedTime,
+      phone:telefono
+    };
+    bks.push(bk);
+    save();
+
+    /* Mark slot taken */
+    const key=bkState.selectedBarber+'|'+bkState.date+'|'+bkState.selectedTime;
+    if(!taken.includes(key)){taken.push(key);save();}
+
+    /* Build WhatsApp message */
+    const dateObj=new Date(bkState.date+'T12:00:00');
+    const dOpts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+    const dateFormatted=dateObj.toLocaleDateString('es-MX',dOpts);
+    const msg=
+      '🌟 *Hola, quiero reservar una cita en ThunderBarber Studio*\n\n'+
+      '👤 *Nombre:* '+nombre+' '+apellido+'\n'+
+      '📱 *Teléfono:* '+telefono+'\n'+
+      '💈 *Barbero:* '+bkState.selectedBarber+'\n'+
+      '📅 *Fecha:* '+dateFormatted+'\n'+
+      '🕐 *Hora:* '+bkState.selectedTime+' hrs\n\n'+
+      '⚡ ¡Quedamos pendientes de confirmación!';
+
+    window.open('https://wa.me/523325983247?text='+encodeURIComponent(msg),'_blank');
+  }, 2800);
+}
+
+/* ─── INIT ─── */
+document.addEventListener('DOMContentLoaded',()=>{
+  const t=new Date().toISOString().split('T')[0];
+  document.getElementById('adm-date').min=t;
+  checkStatus();
+  highlightToday();
+  initCalendar();
+  setInterval(checkStatus,60000);
+});
+</script>
+</body>
+</html>
