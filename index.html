@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARO TATTOOS | Arte en tu piel</title>
+  <meta name="description" content="Estudio de tatuajes profesional. Reserva tu cita, obtén tu cotización y diseña tu próximo tatuaje con ARO TATTOOS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Particles Canvas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Cursor personalizado -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-aro">ARO</span>
+        <span class="logo-tattoos">TATTOOS</span>
+        <span class="logo-year">89s</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#sobre-nosotros" class="nav-link"><i class="fas fa-skull"></i> Nosotros</a></li>
+        <li><a href="#estilos" class="nav-link"><i class="fas fa-paint-brush"></i> Estilos</a></li>
+        <li><a href="#galeria" class="nav-link"><i class="fas fa-images"></i> Galería</a></li>
+        <li><a href="#cotizacion" class="nav-link"><i class="fas fa-tags"></i> Cotización</a></li>
+        <li><a href="#agendar" class="nav-link highlight"><i class="fas fa-calendar-check"></i> Agendar Cita</a></li>
+        <li><a href="#contacto" class="nav-link"><i class="fas fa-phone"></i> Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>Estudio Profesional</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line-1">ARO</span>
+        <span class="title-line-2">TATTOOS</span>
+        <span class="title-line-3">89s</span>
+      </h1>
+      <p class="hero-subtitle">Arte permanente. Diseños únicos. Tu historia en la piel.</p>
+      <div class="hero-divider">
+        <span class="divider-skull"><i class="fas fa-skull"></i></span>
+      </div>
+      <div class="hero-ctas">
+        <a href="#agendar" class="btn btn-primary">
+          <i class="fas fa-calendar-alt"></i>
+          Agendar Cita
+        </a>
+        <a href="#cotizacion" class="btn btn-secondary">
+          <i class="fas fa-dollar-sign"></i>
+          Cotizar Diseño
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="500">0</span><span>+</span>
+          <span class="stat-label">Diseños</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="8">0</span><span>+</span>
+          <span class="stat-label">Años de experiencia</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="100">0</span><span>%</span>
+          <span class="stat-label">Arte original</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE NOSOTROS ===== -->
+  <section id="sobre-nosotros" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Quiénes somos</span>
+        <h2 class="section-title">El Arte en <span class="gold">tu Piel</span></h2>
+        <div class="section-divider"><i class="fas fa-skull"></i></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text" data-aos="fade-right">
+          <h3>Pasión por el Tatuaje</h3>
+          <p>En <strong>ARO TATTOOS 89s</strong> llevamos más de 8 años transformando ideas en obras de arte permanentes. Nuestro estudio combina técnicas tradicionales con estilos contemporáneos para crear diseños únicos que cuentan tu historia.</p>
+          <p>Cada trazo, cada sombra, cada línea es realizada con la máxima precisión y cuidado. Utilizamos tintas de alta calidad y equipos esterilizados para garantizar tu seguridad y satisfacción.</p>
+          <ul class="about-features">
+            <li><i class="fas fa-check-circle"></i> Diseños 100% personalizados</li>
+            <li><i class="fas fa-check-circle"></i> Materiales esterilizados y seguros</li>
+            <li><i class="fas fa-check-circle"></i> Tintas de alta calidad</li>
+            <li><i class="fas fa-check-circle"></i> Consulta previa sin costo</li>
+            <li><i class="fas fa-check-circle"></i> Asesoría en diseño y colocación</li>
+          </ul>
+        </div>
+        <div class="about-visual" data-aos="fade-left">
+          <div class="about-card">
+            <div class="about-card-inner">
+              <i class="fas fa-skull-crossbones about-icon"></i>
+              <h4>ARO TATTOOS</h4>
+              <p>Donde el arte se convierte en identidad</p>
+              <div class="about-card-ornament"></div>
+            </div>
+          </div>
+          <div class="about-badges">
+            <div class="badge-item">
+              <i class="fas fa-award"></i>
+              <span>Calidad garantizada</span>
+            </div>
+            <div class="badge-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>100% higiénico</span>
+            </div>
+            <div class="badge-item">
+              <i class="fas fa-heart"></i>
+              <span>Arte con amor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ESTILOS ===== -->
+  <section id="estilos" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Especialidades</span>
+        <h2 class="section-title">Nuestros <span class="gold">Estilos</span></h2>
+        <div class="section-divider"><i class="fas fa-paint-brush"></i></div>
+      </div>
+      <div class="styles-grid">
+
+        <div class="style-card" data-style="blackwork">
+          <div class="style-icon"><i class="fas fa-pen-nib"></i></div>
+          <h3>Blackwork</h3>
+          <p>Diseños en tinta negra sólida con patrones geométricos y ornamentales de alto impacto visual.</p>
+          <div class="style-tag">Popular</div>
+        </div>
+
+        <div class="style-card" data-style="tradicional">
+          <div class="style-icon"><i class="fas fa-anchor"></i></div>
+          <h3>Tradicional</h3>
+          <p>Líneas gruesas, colores sólidos y diseños clásicos del tatuaje americano tradicional.</p>
+        </div>
+
+        <div class="style-card" data-style="realismo">
+          <div class="style-icon"><i class="fas fa-eye"></i></div>
+          <h3>Realismo</h3>
+          <p>Retratos fotorrealistas, naturaleza y objetos reproducidos con asombroso detalle.</p>
+          <div class="style-tag">Premium</div>
+        </div>
+
+        <div class="style-card" data-style="geometrico">
+          <div class="style-icon"><i class="fas fa-shapes"></i></div>
+          <h3>Geométrico</h3>
+          <p>Figuras exactas, líneas precisas y patrones matemáticos que crean arte minimalista.</p>
+        </div>
+
+        <div class="style-card" data-style="lettering">
+          <div class="style-icon"><i class="fas fa-font"></i></div>
+          <h3>Lettering</h3>
+          <p>Tipografías personalizadas, caligrafía y textos convertidos en arte corporal único.</p>
+        </div>
+
+        <div class="style-card" data-style="ornamental">
+          <div class="style-icon"><i class="fas fa-crown"></i></div>
+          <h3>Ornamental</h3>
+          <p>Diseños de joyas y adornos que imitan la apariencia de accesorios reales sobre la piel.</p>
+          <div class="style-tag">Exclusivo</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALERÍA ===== -->
+  <section id="galeria" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Portafolio</span>
+        <h2 class="section-title">Nuestra <span class="gold">Galería</span></h2>
+        <div class="section-divider"><i class="fas fa-images"></i></div>
+      </div>
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+        <button class="filter-btn" data-filter="realismo">Realismo</button>
+        <button class="filter-btn" data-filter="geometrico">Geométrico</button>
+        <button class="filter-btn" data-filter="lettering">Lettering</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Blackwork 1 -->
+        <div class="gallery-item" data-category="blackwork">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder bw1">
+              <i class="fas fa-skull"></i>
+              <span>Blackwork Skull</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Blackwork Skull" data-style="Blackwork"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Blackwork</span>
+          </div>
+        </div>
+        <!-- Blackwork 2 -->
+        <div class="gallery-item" data-category="blackwork">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder bw2">
+              <i class="fas fa-dragon"></i>
+              <span>Serpiente Tribal</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Serpiente Tribal" data-style="Blackwork"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Blackwork</span>
+          </div>
+        </div>
+        <!-- Realismo 1 -->
+        <div class="gallery-item" data-category="realismo">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder re1">
+              <i class="fas fa-wolf-pack-battalion"></i>
+              <i class="fas fa-eye"></i>
+              <span>Retrato Realista</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Retrato Realista" data-style="Realismo"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Realismo</span>
+          </div>
+        </div>
+        <!-- Geométrico 1 -->
+        <div class="gallery-item" data-category="geometrico">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder ge1">
+              <i class="fas fa-atom"></i>
+              <span>Mandala Geométrico</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Mandala Geométrico" data-style="Geométrico"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Geométrico</span>
+          </div>
+        </div>
+        <!-- Lettering 1 -->
+        <div class="gallery-item" data-category="lettering">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder le1">
+              <i class="fas fa-feather-alt"></i>
+              <span>Caligrafía Premium</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Caligrafía Premium" data-style="Lettering"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Lettering</span>
+          </div>
+        </div>
+        <!-- Blackwork 3 -->
+        <div class="gallery-item" data-category="blackwork">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder bw3">
+              <i class="fas fa-fire"></i>
+              <span>Llamas Blackwork</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Llamas Blackwork" data-style="Blackwork"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Blackwork</span>
+          </div>
+        </div>
+        <!-- Realismo 2 -->
+        <div class="gallery-item" data-category="realismo">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder re2">
+              <i class="fas fa-crow"></i>
+              <span>Cuervo Realista</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Cuervo Realista" data-style="Realismo"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Realismo</span>
+          </div>
+        </div>
+        <!-- Geométrico 2 -->
+        <div class="gallery-item" data-category="geometrico">
+          <div class="gallery-img-wrap">
+            <div class="gallery-placeholder ge2">
+              <i class="fas fa-infinity"></i>
+              <span>Infinity Geométrico</span>
+            </div>
+            <div class="gallery-overlay">
+              <button class="gallery-zoom" data-title="Infinity Geométrico" data-style="Geométrico"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-style">Geométrico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COTIZADOR ===== -->
+  <section id="cotizacion" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Precios</span>
+        <h2 class="section-title">Cotiza tu <span class="gold">Diseño</span></h2>
+        <div class="section-divider"><i class="fas fa-tags"></i></div>
+        <p class="section-desc">Obtén una estimación de precio basada en tu diseño. El precio final se confirma en la consulta presencial.</p>
+      </div>
+
+      <div class="cotizador-wrap">
+        <div class="cotizador-form" id="cotizadorForm">
+
+          <div class="quote-step active" id="qStep1">
+            <h3 class="quote-step-title"><span>01</span> Tamaño del tatuaje</h3>
+            <div class="size-options">
+              <label class="size-option">
+                <input type="radio" name="size" value="mini" data-price="500" data-label="Mini (hasta 3cm)" />
+                <div class="size-card">
+                  <div class="size-icon small-dot"></div>
+                  <span class="size-name">Mini</span>
+                  <span class="size-desc">Hasta 3 cm</span>
+                  <span class="size-price">Desde $500</span>
+                </div>
+              </label>
+              <label class="size-option">
+                <input type="radio" name="size" value="pequeño" data-price="900" data-label="Pequeño (3–6cm)" />
+                <div class="size-card">
+                  <div class="size-icon med-dot"></div>
+                  <span class="size-name">Pequeño</span>
+                  <span class="size-desc">3 – 6 cm</span>
+                  <span class="size-price">Desde $900</span>
+                </div>
+              </label>
+              <label class="size-option">
+                <input type="radio" name="size" value="mediano" data-price="1500" data-label="Mediano (6–12cm)" />
+                <div class="size-card">
+                  <div class="size-icon large-dot"></div>
+                  <span class="size-name">Mediano</span>
+                  <span class="size-desc">6 – 12 cm</span>
+                  <span class="size-price">Desde $1,500</span>
+                </div>
+              </label>
+              <label class="size-option">
+                <input type="radio" name="size" value="grande" data-price="2800" data-label="Grande (12–20cm)" />
+                <div class="size-card">
+                  <div class="size-icon xl-dot"></div>
+                  <span class="size-name">Grande</span>
+                  <span class="size-desc">12 – 20 cm</span>
+                  <span class="size-price">Desde $2,800</span>
+                </div>
+              </label>
+              <label class="size-option">
+                <input type="radio" name="size" value="extra" data-price="5000" data-label="Extra grande (20cm+)" />
+                <div class="size-card">
+                  <div class="size-icon xxl-dot"></div>
+                  <span class="size-name">Extra Grande</span>
+                  <span class="size-desc">20 cm +</span>
+                  <span class="size-price">Desde $5,000</span>
+                </div>
+              </label>
+            </div>
+            <button class="btn btn-primary quote-next" data-next="qStep2">Siguiente <i class="fas fa-arrow-right"></i></button>
+          </div>
+
+          <div class="quote-step" id="qStep2">
+            <h3 class="quote-step-title"><span>02</span> Estilo de tatuaje</h3>
+            <div class="style-options">
+              <label class="style-option">
+                <input type="radio" name="style" value="blackwork" data-mult="1.0" data-label="Blackwork" />
+                <div class="style-opt-card">
+                  <i class="fas fa-pen-nib"></i>
+                  <span>Blackwork</span>
+                </div>
+              </label>
+              <label class="style-option">
+                <input type="radio" name="style" value="tradicional" data-mult="1.1" data-label="Tradicional" />
+                <div class="style-opt-card">
+                  <i class="fas fa-anchor"></i>
+                  <span>Tradicional</span>
+                </div>
+              </label>
+              <label class="style-option">
+                <input type="radio" name="style" value="realismo" data-mult="1.5" data-label="Realismo" />
+                <div class="style-opt-card premium">
+                  <i class="fas fa-eye"></i>
+                  <span>Realismo</span>
+                  <small>+50%</small>
+                </div>
+              </label>
+              <label class="style-option">
+                <input type="radio" name="style" value="geometrico" data-mult="1.2" data-label="Geométrico" />
+                <div class="style-opt-card">
+                  <i class="fas fa-shapes"></i>
+                  <span>Geométrico</span>
+                </div>
+              </label>
+              <label class="style-option">
+                <input type="radio" name="style" value="lettering" data-mult="1.0" data-label="Lettering" />
+                <div class="style-opt-card">
+                  <i class="fas fa-font"></i>
+                  <span>Lettering</span>
+                </div>
+              </label>
+              <label class="style-option">
+                <input type="radio" name="style" value="acuarela" data-mult="1.4" data-label="Acuarela" />
+                <div class="style-opt-card">
+                  <i class="fas fa-fill-drip"></i>
+                  <span>Acuarela</span>
+                  <small>+40%</small>
+                </div>
+              </label>
+            </div>
+            <div class="quote-nav">
+              <button class="btn btn-outline quote-prev" data-prev="qStep1"><i class="fas fa-arrow-left"></i> Anterior</button>
+              <button class="btn btn-primary quote-next" data-next="qStep3">Siguiente <i class="fas fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <div class="quote-step" id="qStep3">
+            <h3 class="quote-step-title"><span>03</span> Color y detalles</h3>
+            <div class="color-options">
+              <label class="color-option">
+                <input type="radio" name="color" value="negro" data-add="0" data-label="Solo Negro" />
+                <div class="color-opt-card">
+                  <div class="color-swatch black-swatch"></div>
+                  <span>Solo Negro</span>
+                  <small>Sin costo adicional</small>
+                </div>
+              </label>
+              <label class="color-option">
+                <input type="radio" name="color" value="grises" data-add="200" data-label="Negro y Grises" />
+                <div class="color-opt-card">
+                  <div class="color-swatch grey-swatch"></div>
+                  <span>Negro y Grises</span>
+                  <small>+$200</small>
+                </div>
+              </label>
+              <label class="color-option">
+                <input type="radio" name="color" value="color" data-add="500" data-label="A Color" />
+                <div class="color-opt-card">
+                  <div class="color-swatch color-swatch-multi"></div>
+                  <span>A Color</span>
+                  <small>+$500</small>
+                </div>
+              </label>
+            </div>
+            <div class="complexity-wrap">
+              <label>Complejidad del diseño</label>
+              <div class="complexity-slider-wrap">
+                <input type="range" id="complexitySlider" min="0" max="4" step="1" value="0" />
+                <div class="complexity-labels">
+                  <span>Simple</span>
+                  <span>Básico</span>
+                  <span>Normal</span>
+                  <span>Complejo</span>
+                  <span>Muy complejo</span>
+                </div>
+              </div>
+            </div>
+            <div class="quote-nav">
+              <button class="btn btn-outline quote-prev" data-prev="qStep2"><i class="fas fa-arrow-left"></i> Anterior</button>
+              <button class="btn btn-primary quote-next" data-next="qStep4">Ver Cotización <i class="fas fa-calculator"></i></button>
+            </div>
+          </div>
+
+          <div class="quote-step" id="qStep4">
+            <h3 class="quote-step-title"><span>04</span> Tu Cotización</h3>
+            <div class="quote-result">
+              <div class="quote-summary">
+                <h4>Resumen de tu diseño:</h4>
+                <ul id="quoteSummaryList"></ul>
+              </div>
+              <div class="quote-price-display">
+                <span class="quote-price-label">Precio estimado</span>
+                <div class="quote-price-amount">
+                  <span class="currency">$</span>
+                  <span id="quotePriceValue">0</span>
+                  <span class="currency">MXN</span>
+                </div>
+                <p class="quote-disclaimer">* Precio estimado. El precio final se confirma en consulta presencial.</p>
+              </div>
+              <div class="quote-actions">
+                <button class="btn btn-primary" id="btnWhatsAppQuote">
+                  <i class="fab fa-whatsapp"></i>
+                  Enviar cotización por WhatsApp
+                </button>
+                <a href="#agendar" class="btn btn-secondary">
+                  <i class="fas fa-calendar-check"></i>
+                  Agendar mi Cita
+                </a>
+                <button class="btn btn-outline" id="btnResetQuote">
+                  <i class="fas fa-redo"></i>
+                  Nueva cotización
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="cotizador-progress">
+          <div class="progress-step active" data-step="1">
+            <div class="progress-dot"><span>1</span></div>
+            <span>Tamaño</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="progress-dot"><span>2</span></div>
+            <span>Estilo</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="progress-dot"><span>3</span></div>
+            <span>Color</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="4">
+            <div class="progress-dot"><span>4</span></div>
+            <span>Resultado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AGENDAR CITA ===== -->
+  <section id="agendar" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Reservaciones</span>
+        <h2 class="section-title">Agenda tu <span class="gold">Cita</span></h2>
+        <div class="section-divider"><i class="fas fa-calendar-check"></i></div>
+        <p class="section-desc">Completa el formulario y nos pondremos en contacto contigo para confirmar tu cita.</p>
+      </div>
+
+      <div class="booking-wrap">
+        <form id="bookingForm" novalidate>
+
+          <!-- Step 1: Datos personales -->
+          <div class="booking-step active" id="bStep1">
+            <h3 class="booking-step-title">
+              <i class="fas fa-user"></i>
+              Datos Personales
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="clientName">Nombre completo *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-user"></i>
+                  <input type="text" id="clientName" name="clientName" placeholder="Tu nombre" required />
+                </div>
+                <span class="field-error" id="errName"></span>
+              </div>
+              <div class="form-group">
+                <label for="clientPhone">Teléfono / WhatsApp *</label>
+                <div class="input-wrap">
+                  <i class="fab fa-whatsapp"></i>
+                  <input type="tel" id="clientPhone" name="clientPhone" placeholder="+52 33 1234 5678" required />
+                </div>
+                <span class="field-error" id="errPhone"></span>
+              </div>
+              <div class="form-group">
+                <label for="clientEmail">Correo electrónico</label>
+                <div class="input-wrap">
+                  <i class="fas fa-envelope"></i>
+                  <input type="email" id="clientEmail" name="clientEmail" placeholder="tu@email.com" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="clientAge">Edad *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-birthday-cake"></i>
+                  <input type="number" id="clientAge" name="clientAge" placeholder="18" min="18" max="99" required />
+                </div>
+                <span class="field-error" id="errAge"></span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary booking-next" data-next="bStep2">
+              Continuar <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- Step 2: Detalles del tatuaje -->
+          <div class="booking-step" id="bStep2">
+            <h3 class="booking-step-title">
+              <i class="fas fa-pen-nib"></i>
+              Detalles del Tatuaje
+            </h3>
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="tattooDesc">Descripción del diseño *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-pencil-alt"></i>
+                  <textarea id="tattooDesc" name="tattooDesc" placeholder="Describe el diseño que tienes en mente, referencias, ideas..." rows="4" required></textarea>
+                </div>
+                <span class="field-error" id="errDesc"></span>
+              </div>
+              <div class="form-group">
+                <label for="tattooStyle">Estilo preferido *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-paint-brush"></i>
+                  <select id="tattooStyle" name="tattooStyle" required>
+                    <option value="">Selecciona un estilo</option>
+                    <option value="blackwork">Blackwork</option>
+                    <option value="tradicional">Tradicional</option>
+                    <option value="realismo">Realismo</option>
+                    <option value="geometrico">Geométrico</option>
+                    <option value="lettering">Lettering</option>
+                    <option value="acuarela">Acuarela</option>
+                    <option value="ornamental">Ornamental</option>
+                    <option value="otro">Otro / No sé</option>
+                  </select>
+                </div>
+                <span class="field-error" id="errStyle"></span>
+              </div>
+              <div class="form-group">
+                <label for="tattooSize">Tamaño aproximado *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-ruler"></i>
+                  <select id="tattooSize" name="tattooSize" required>
+                    <option value="">Selecciona tamaño</option>
+                    <option value="mini">Mini (hasta 3 cm)</option>
+                    <option value="pequeño">Pequeño (3–6 cm)</option>
+                    <option value="mediano">Mediano (6–12 cm)</option>
+                    <option value="grande">Grande (12–20 cm)</option>
+                    <option value="extra">Extra grande (20 cm+)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bodyPart">Zona del cuerpo *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-male"></i>
+                  <select id="bodyPart" name="bodyPart" required>
+                    <option value="">Selecciona zona</option>
+                    <option value="antebrazo">Antebrazo</option>
+                    <option value="brazo">Brazo (parte superior)</option>
+                    <option value="mano">Mano / Nudillos</option>
+                    <option value="pecho">Pecho</option>
+                    <option value="espalda">Espalda</option>
+                    <option value="costilla">Costilla / Costado</option>
+                    <option value="pierna">Pierna</option>
+                    <option value="tobillo">Tobillo / Pie</option>
+                    <option value="cuello">Cuello</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+                <span class="field-error" id="errBody"></span>
+              </div>
+              <div class="form-group full-width">
+                <label>¿Tienes referencia de imagen?</label>
+                <div class="reference-options">
+                  <label class="ref-opt">
+                    <input type="radio" name="hasRef" value="si" />
+                    <span><i class="fas fa-check"></i> Sí, tengo referencia</span>
+                  </label>
+                  <label class="ref-opt">
+                    <input type="radio" name="hasRef" value="no" />
+                    <span><i class="fas fa-times"></i> No, necesito asesoría</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="booking-nav">
+              <button type="button" class="btn btn-outline booking-prev" data-prev="bStep1">
+                <i class="fas fa-arrow-left"></i> Anterior
+              </button>
+              <button type="button" class="btn btn-primary booking-next" data-next="bStep3">
+                Continuar <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Fecha y hora -->
+          <div class="booking-step" id="bStep3">
+            <h3 class="booking-step-title">
+              <i class="fas fa-calendar-alt"></i>
+              Fecha y Hora
+            </h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="appointDate">Fecha deseada *</label>
+                <div class="input-wrap">
+                  <i class="fas fa-calendar"></i>
+                  <input type="date" id="appointDate" name="appointDate" required />
+                </div>
+                <span class="field-error" id="errDate"></span>
+              </div>
+              <div class="form-group">
+                <label>Horario preferido *</label>
+                <div class="time-slots" id="timeSlots">
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="10:00" />
+                    <span>10:00 AM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="11:00" />
+                    <span>11:00 AM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="12:00" />
+                    <span>12:00 PM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="13:00" />
+                    <span>1:00 PM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="15:00" />
+                    <span>3:00 PM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="16:00" />
+                    <span>4:00 PM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="17:00" />
+                    <span>5:00 PM</span>
+                  </label>
+                  <label class="time-slot">
+                    <input type="radio" name="timeSlot" value="18:00" />
+                    <span>6:00 PM</span>
+                  </label>
+                </div>
+                <span class="field-error" id="errTime"></span>
+              </div>
+              <div class="form-group full-width">
+                <label for="extraNotes">Notas adicionales</label>
+                <div class="input-wrap">
+                  <i class="fas fa-sticky-note"></i>
+                  <textarea id="extraNotes" name="extraNotes" placeholder="Cualquier información adicional que quieras compartir..." rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="booking-nav">
+              <button type="button" class="btn btn-outline booking-prev" data-prev="bStep2">
+                <i class="fas fa-arrow-left"></i> Anterior
+              </button>
+              <button type="button" class="btn btn-primary booking-next" data-next="bStep4">
+                Revisar <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Confirmar -->
+          <div class="booking-step" id="bStep4">
+            <h3 class="booking-step-title">
+              <i class="fas fa-check-circle"></i>
+              Confirmar Cita
+            </h3>
+            <div class="booking-review" id="bookingReview">
+              <!-- Se llena dinámicamente -->
+            </div>
+            <div class="booking-nav booking-nav-final">
+              <button type="button" class="btn btn-outline booking-prev" data-prev="bStep3">
+                <i class="fas fa-arrow-left"></i> Editar
+              </button>
+              <button type="button" class="btn btn-whatsapp" id="btnConfirmBooking">
+                <i class="fab fa-whatsapp"></i>
+                Confirmar por WhatsApp
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- Booking Steps Indicator -->
+        <div class="booking-progress">
+          <div class="bp-step active" data-step="1">
+            <div class="bp-dot"><i class="fas fa-user"></i></div>
+            <span>Datos</span>
+          </div>
+          <div class="bp-line"></div>
+          <div class="bp-step" data-step="2">
+            <div class="bp-dot"><i class="fas fa-pen-nib"></i></div>
+            <span>Diseño</span>
+          </div>
+          <div class="bp-line"></div>
+          <div class="bp-step" data-step="3">
+            <div class="bp-dot"><i class="fas fa-calendar"></i></div>
+            <span>Fecha</span>
+          </div>
+          <div class="bp-line"></div>
+          <div class="bp-step" data-step="4">
+            <div class="bp-dot"><i class="fas fa-check"></i></div>
+            <span>Confirmar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTO ===== -->
+  <section id="contacto" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Encuéntranos</span>
+        <h2 class="section-title"><span class="gold">Contáctanos</span></h2>
+        <div class="section-divider"><i class="fas fa-phone"></i></div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <h3>WhatsApp</h3>
+          <p>+52 33 1873 7958</p>
+          <a href="https://wa.me/523318737958" target="_blank" rel="noopener" class="btn btn-whatsapp">
+            Enviar mensaje
+          </a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fab fa-instagram"></i>
+          </div>
+          <h3>Instagram</h3>
+          <p>@aro_tattoos89s</p>
+          <a href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noopener" class="btn btn-instagram">
+            Ver perfil
+          </a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Horarios</h3>
+          <p>Lun – Sáb</p>
+          <p>10:00 AM – 7:00 PM</p>
+          <span class="open-badge">Abierto hoy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="footer-ornaments">
+      <div class="footer-line"></div>
+      <div class="footer-skull"><i class="fas fa-skull"></i></div>
+      <div class="footer-line"></div>
+    </div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-aro">ARO</span>
+            <span class="logo-tattoos">TATTOOS</span>
+            <span class="logo-year">89s</span>
+          </div>
+          <p class="footer-tagline">Arte permanente. Diseños únicos. Tu historia en la piel.</p>
+          <div class="footer-socials">
+            <a href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noopener" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/523318737958" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.tiktok.com/@aro_tattoos89s" target="_blank" rel="noopener" aria-label="TikTok">
+              <i class="fab fa-tiktok"></i>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Menú</h4>
+          <ul>
+            <li><a href="#sobre-nosotros">Nosotros</a></li>
+            <li><a href="#estilos">Estilos</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#cotizacion">Cotización</a></li>
+            <li><a href="#agendar">Agendar Cita</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-styles">
+          <h4>Estilos</h4>
+          <ul>
+            <li><a href="#estilos">Blackwork</a></li>
+            <li><a href="#estilos">Tradicional</a></li>
+            <li><a href="#estilos">Realismo</a></li>
+            <li><a href="#estilos">Geométrico</a></li>
+            <li><a href="#estilos">Lettering</a></li>
+            <li><a href="#estilos">Ornamental</a></li>
+          </ul>
+        </div>
+        <div class="footer-cta">
+          <h4>¿Listo para tu tatuaje?</h4>
+          <p>Contacta con nosotros y hagamos realidad tu diseño</p>
+          <a href="https://wa.me/523318737958" target="_blank" rel="noopener" class="btn btn-primary footer-whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            Escribir por WhatsApp
+          </a>
+          <a href="#agendar" class="btn btn-secondary">
+            <i class="fas fa-calendar-check"></i>
+            Agendar Cita
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 ARO TATTOOS 89s. Todos los derechos reservados.</p>
+        <p>Diseño con <i class="fas fa-heart"></i> para el arte del tatuaje.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-overlay" id="lightboxOverlay"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+      <div class="lightbox-img-wrap" id="lightboxImgWrap">
+        <div class="lightbox-placeholder">
+          <i class="fas fa-skull" id="lightboxIcon"></i>
+          <span id="lightboxTitle"></span>
+        </div>
+      </div>
+      <div class="lightbox-info">
+        <span id="lightboxStyle"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FLOATING WHATSAPP ===== -->
+  <a href="https://wa.me/523318737958?text=Hola%20ARO%20TATTOOS%2C%20me%20interesa%20agendar%20una%20cita." 
+     target="_blank" rel="noopener" class="float-whatsapp" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="float-tooltip">¡Escríbenos!</span>
+  </a>
+
+  <!-- ===== BACK TO TOP ===== -->
+  <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
