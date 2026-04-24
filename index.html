@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Agenda tu cita de tatuajes con Aro Tattoos. Cotiza en linea, elige diseno, agenda fecha y hora, y confirma por WhatsApp."
+    />
+    <title>Aro Tattoos | Agenda y Cotiza tu Tatuaje</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise-layer"></div>
+    <div class="cursor-glow"></div>
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="#inicio" aria-label="Ir al inicio">
+          <span class="brand-mark">AR</span>
+          <div>
+            <p class="brand-kicker">Black Gangstar Ink</p>
+            <h1>Aro Tattoos</h1>
+          </div>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="site-nav" id="siteNav">
+          <a href="#inicio">Inicio</a>
+          <a href="#cotiza">Cotiza</a>
+          <a href="#disenos">Disenos</a>
+          <a href="#proceso">Proceso</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero section" id="inicio">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Ink booking experience</p>
+            <h2>
+              Agenda tu tatuaje con una vibra
+              <span>black gangstar</span>
+              y cotiza todo en un solo lugar.
+            </h2>
+            <p class="hero-text">
+              Elige estilo, tamano, zona, extras, fecha y hora. Recibe una
+              cotizacion instantanea y confirma la reserva enviando toda la
+              informacion directo por WhatsApp.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#cotiza">Cotizar ahora</a>
+              <a class="btn btn-secondary" href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noreferrer">
+                Ver Instagram
+              </a>
+            </div>
+
+            <div class="hero-metrics">
+              <article>
+                <strong>100%</strong>
+                <span>Personalizado</span>
+              </article>
+              <article>
+                <strong>+20</strong>
+                <span>Horarios premium</span>
+              </article>
+              <article>
+                <strong>24/7</strong>
+                <span>Solicitud digital</span>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero-visual reveal">
+            <div class="hero-card main-card">
+              <span class="chip">Disponible para booking</span>
+              <h3>Custom black gangstar set</h3>
+              <p>
+                Disenos con sombras profundas, lineas agresivas y composiciones
+                urbanas para piezas unicas.
+              </p>
+              <div class="card-tags">
+                <span>Blackwork</span>
+                <span>Lettering</span>
+                <span>Realism</span>
+                <span>Fine line</span>
+              </div>
+            </div>
+
+            <div class="floating-card quote-card">
+              <p>Reserva estimada</p>
+              <strong id="heroEstimate">$1,500 MXN</strong>
+              <span>Actualizado en tiempo real</span>
+            </div>
+
+            <div class="floating-card social-card">
+              <p>Instagram oficial</p>
+              <a href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noreferrer">
+                @aro_tattoos89s
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section services">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Servicios y estilos</p>
+            <h2>Todo lo necesario para cotizar con claridad.</h2>
+            <p>
+              Precios base pensados para orientar al cliente antes de la
+              confirmacion final del diseno.
+            </p>
+          </div>
+
+          <div class="service-grid">
+            <article class="service-card reveal">
+              <span class="service-index">01</span>
+              <h3>Blackwork urbano</h3>
+              <p>Sombras densas, contraste alto y visual fuerte.</p>
+              <strong>Desde $1,500 MXN</strong>
+            </article>
+            <article class="service-card reveal">
+              <span class="service-index">02</span>
+              <h3>Lettering premium</h3>
+              <p>Frases, nombres y tipografias con composicion custom.</p>
+              <strong>Desde $1,200 MXN</strong>
+            </article>
+            <article class="service-card reveal">
+              <span class="service-index">03</span>
+              <h3>Realism oscuro</h3>
+              <p>Retratos, iconografia y piezas detalladas por sesiones.</p>
+              <strong>Desde $2,200 MXN</strong>
+            </article>
+            <article class="service-card reveal">
+              <span class="service-index">04</span>
+              <h3>Fine line elegante</h3>
+              <p>Lineas limpias, look delicado y precision visual.</p>
+              <strong>Desde $1,300 MXN</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section quote-section" id="cotiza">
+        <div class="container quote-layout">
+          <div class="quote-builder reveal">
+            <div class="section-heading left">
+              <p class="eyebrow">Cotizador + agenda</p>
+              <h2>Arma tu proyecto y bloquea tu cita.</h2>
+              <p>
+                Completa cada paso y al final seras redirigido a WhatsApp con
+                toda la cotizacion lista para cerrar la reserva.
+              </p>
+            </div>
+
+            <div class="step-nav" id="stepNav">
+              <button class="step-pill active" data-step-target="1">1. Diseno</button>
+              <button class="step-pill" data-step-target="2">2. Estilo y extras</button>
+              <button class="step-pill" data-step-target="3">3. Cliente y agenda</button>
+            </div>
+
+            <form id="bookingForm" class="booking-form">
+              <section class="form-step active" data-step="1">
+                <div class="input-group">
+                  <label>Tipo de diseno</label>
+                  <div class="option-grid design-options">
+                    <label class="option-card selected">
+                      <input type="radio" name="style" value="Blackwork urbano" data-price="1500" checked />
+                      <span class="option-title">Blackwork urbano</span>
+                      <small>Sombras intensas y contraste alto</small>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="style" value="Lettering premium" data-price="1200" />
+                      <span class="option-title">Lettering premium</span>
+                      <small>Frases, nombres y caligrafia custom</small>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="style" value="Realism oscuro" data-price="2200" />
+                      <span class="option-title">Realism oscuro</span>
+                      <small>Detalle alto y sesiones planeadas</small>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="style" value="Fine line elegante" data-price="1300" />
+                      <span class="option-title">Fine line elegante</span>
+                      <small>Precision limpia con toque premium</small>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="style" value="Gangstar custom" data-price="2600" />
+                      <span class="option-title">Gangstar custom</span>
+                      <small>Concepto original de alto impacto</small>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="tattooSize">Tamano de la pieza</label>
+                    <select id="tattooSize" name="size">
+                      <option value="Mini (5-8 cm)" data-multiplier="1">Mini (5-8 cm)</option>
+                      <option value="Mediano (9-15 cm)" data-multiplier="1.45">Mediano (9-15 cm)</option>
+                      <option value="Grande (16-25 cm)" data-multiplier="2.1">Grande (16-25 cm)</option>
+                      <option value="Manga o proyecto extendido" data-multiplier="4.2">Manga o proyecto extendido</option>
+                    </select>
+                  </div>
+
+                  <div class="input-group">
+                    <label for="placement">Zona del cuerpo</label>
+                    <select id="placement" name="placement">
+                      <option value="Brazo" data-fee="0">Brazo</option>
+                      <option value="Pecho" data-fee="350">Pecho</option>
+                      <option value="Cuello" data-fee="450">Cuello</option>
+                      <option value="Espalda" data-fee="700">Espalda</option>
+                      <option value="Pierna" data-fee="250">Pierna</option>
+                      <option value="Mano o dedos" data-fee="300">Mano o dedos</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label for="idea">Describe tu idea o concepto</label>
+                  <textarea
+                    id="idea"
+                    name="idea"
+                    rows="5"
+                    placeholder="Ejemplo: Quiero una pieza blackwork con lettering gotico, rosa negra y sombras densas."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn btn-primary next-step">Continuar</button>
+                </div>
+              </section>
+
+              <section class="form-step" data-step="2">
+                <div class="input-row">
+                  <div class="input-group">
+                    <label>Acabado</label>
+                    <div class="toggle-set">
+                      <label class="toggle-card selected">
+                        <input type="radio" name="finish" value="Negro y gris" data-fee="0" checked />
+                        <span>Negro y gris</span>
+                      </label>
+                      <label class="toggle-card">
+                        <input type="radio" name="finish" value="Color parcial" data-fee="600" />
+                        <span>Color parcial</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="input-group">
+                    <label for="painScale">Nivel de detalle</label>
+                    <input id="painScale" type="range" min="1" max="5" value="3" />
+                    <div class="range-labels">
+                      <span>Clean</span>
+                      <span id="detailLabel">Detalle medio</span>
+                      <span>Max ink</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label>Extras opcionales</label>
+                  <div class="option-grid extras-grid">
+                    <label class="option-card compact">
+                      <input type="checkbox" name="extra" value="Boceto premium" data-fee="450" />
+                      <span class="option-title">Boceto premium</span>
+                      <small>Preview extra del diseno antes de la cita</small>
+                    </label>
+                    <label class="option-card compact">
+                      <input type="checkbox" name="extra" value="Cover up o retoque complejo" data-fee="800" />
+                      <span class="option-title">Cover up</span>
+                      <small>Requiere estrategia y mas contraste</small>
+                    </label>
+                    <label class="option-card compact">
+                      <input type="checkbox" name="extra" value="Prioridad de agenda" data-fee="700" />
+                      <span class="option-title">Prioridad de agenda</span>
+                      <small>Espacio preferente en calendario</small>
+                    </label>
+                    <label class="option-card compact">
+                      <input type="checkbox" name="extra" value="Creacion de concepto exclusivo" data-fee="900" />
+                      <span class="option-title">Concepto exclusivo</span>
+                      <small>Composicion original hecha desde cero</small>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="input-group upload-box">
+                  <label for="references">Referencias visuales (opcional)</label>
+                  <input id="references" name="references" type="file" multiple accept="image/*" />
+                  <p id="fileSummary">No se han seleccionado referencias.</p>
+                </div>
+
+                <div class="form-actions split">
+                  <button type="button" class="btn btn-secondary prev-step">Volver</button>
+                  <button type="button" class="btn btn-primary next-step">Continuar</button>
+                </div>
+              </section>
+
+              <section class="form-step" data-step="3">
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="clientName">Nombre del cliente</label>
+                    <input id="clientName" name="clientName" type="text" placeholder="Tu nombre completo" required />
+                  </div>
+                  <div class="input-group">
+                    <label for="clientPhone">Telefono</label>
+                    <input id="clientPhone" name="clientPhone" type="tel" placeholder="+52..." required />
+                  </div>
+                </div>
+
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="clientEmail">Email</label>
+                    <input id="clientEmail" name="clientEmail" type="email" placeholder="tu@email.com" />
+                  </div>
+                  <div class="input-group">
+                    <label for="budget">Presupuesto aproximado</label>
+                    <input id="budget" name="budget" type="text" placeholder="Ejemplo: 3000 MXN" />
+                  </div>
+                </div>
+
+                <div class="input-row">
+                  <div class="input-group">
+                    <label for="appointmentDate">Fecha deseada</label>
+                    <input id="appointmentDate" name="appointmentDate" type="date" required />
+                  </div>
+                  <div class="input-group">
+                    <label for="appointmentTime">Hora deseada</label>
+                    <select id="appointmentTime" name="appointmentTime" required>
+                      <option value="">Selecciona horario</option>
+                      <option>11:00 AM</option>
+                      <option>12:30 PM</option>
+                      <option>2:00 PM</option>
+                      <option>3:30 PM</option>
+                      <option>5:00 PM</option>
+                      <option>6:30 PM</option>
+                      <option>8:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label for="notes">Notas adicionales</label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    rows="4"
+                    placeholder="Alergias, zona sensible, preferencias de musica, dudas, etc."
+                  ></textarea>
+                </div>
+
+                <div class="terms-box">
+                  <input id="terms" type="checkbox" required />
+                  <label for="terms">
+                    Confirmo que la informacion es correcta y deseo enviar la
+                    cotizacion completa por WhatsApp al estudio.
+                  </label>
+                </div>
+
+                <div class="form-actions split">
+                  <button type="button" class="btn btn-secondary prev-step">Volver</button>
+                  <button type="submit" class="btn btn-primary">Confirmar por WhatsApp</button>
+                </div>
+              </section>
+            </form>
+          </div>
+
+          <aside class="quote-summary reveal">
+            <div class="summary-card">
+              <p class="summary-kicker">Resumen de cotizacion</p>
+              <h3>Tu proyecto en vivo</h3>
+
+              <div class="summary-line">
+                <span>Estilo</span>
+                <strong id="summaryStyle">Blackwork urbano</strong>
+              </div>
+              <div class="summary-line">
+                <span>Tamano</span>
+                <strong id="summarySize">Mini (5-8 cm)</strong>
+              </div>
+              <div class="summary-line">
+                <span>Zona</span>
+                <strong id="summaryPlacement">Brazo</strong>
+              </div>
+              <div class="summary-line">
+                <span>Acabado</span>
+                <strong id="summaryFinish">Negro y gris</strong>
+              </div>
+              <div class="summary-line">
+                <span>Detalle</span>
+                <strong id="summaryDetail">Detalle medio</strong>
+              </div>
+
+              <div class="summary-tags" id="summaryExtras">
+                <span>Sin extras</span>
+              </div>
+
+              <div class="price-breakdown">
+                <div>
+                  <span>Subtotal estimado</span>
+                  <strong id="subtotalPrice">$1,500 MXN</strong>
+                </div>
+                <div>
+                  <span>Anticipo sugerido (30%)</span>
+                  <strong id="depositPrice">$450 MXN</strong>
+                </div>
+                <div class="total-line">
+                  <span>Total cotizado</span>
+                  <strong id="totalPrice">$1,500 MXN</strong>
+                </div>
+              </div>
+
+              <div class="agenda-preview">
+                <p>Fecha y hora elegidas</p>
+                <strong id="summarySchedule">Por definir</strong>
+                <span id="sessionLength">Sesion estimada: 2 horas</span>
+              </div>
+
+              <a class="inline-social" href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noreferrer">
+                Seguir estudio en Instagram
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section gallery-section" id="disenos">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Moodboard visual</p>
+            <h2>Disenos pensados para una presencia pesada y elegante.</h2>
+            <p>
+              Filtra por estilo y descubre ideas para lettering, blackwork,
+              realismo oscuro y piezas custom.
+            </p>
+          </div>
+
+          <div class="gallery-filter reveal">
+            <button class="filter-btn active" data-filter="all">Todo</button>
+            <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+            <button class="filter-btn" data-filter="lettering">Lettering</button>
+            <button class="filter-btn" data-filter="realism">Realism</button>
+            <button class="filter-btn" data-filter="custom">Custom</button>
+          </div>
+
+          <div class="gallery-grid">
+            <article class="gallery-card reveal" data-category="blackwork">
+              <div class="gallery-art art-one"></div>
+              <div class="gallery-copy">
+                <h3>Shadow Crown</h3>
+                <p>Negro profundo con estructura agresiva y brillos sutiles.</p>
+              </div>
+            </article>
+            <article class="gallery-card reveal" data-category="lettering">
+              <div class="gallery-art art-two"></div>
+              <div class="gallery-copy">
+                <h3>Street Prayer</h3>
+                <p>Lettering gotico con lectura potente y acabado limpio.</p>
+              </div>
+            </article>
+            <article class="gallery-card reveal" data-category="realism">
+              <div class="gallery-art art-three"></div>
+              <div class="gallery-copy">
+                <h3>Noir Saint</h3>
+                <p>Retrato oscuro con profundidad de sombras y volumen.</p>
+              </div>
+            </article>
+            <article class="gallery-card reveal" data-category="custom">
+              <div class="gallery-art art-four"></div>
+              <div class="gallery-copy">
+                <h3>Gangstar Script</h3>
+                <p>Concepto exclusivo para pecho o espalda con visual urbano.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section process-section" id="proceso">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Como funciona</p>
+            <h2>Del concepto a la tinta en tres movimientos.</h2>
+          </div>
+
+          <div class="timeline">
+            <article class="timeline-card reveal">
+              <span>01</span>
+              <h3>Cotiza tu idea</h3>
+              <p>Selecciona el estilo, tamano, zona y extras para obtener un precio estimado.</p>
+            </article>
+            <article class="timeline-card reveal">
+              <span>02</span>
+              <h3>Agenda fecha y hora</h3>
+              <p>Deja tus datos, escoge horario y agrega referencias para afinar el concepto.</p>
+            </article>
+            <article class="timeline-card reveal">
+              <span>03</span>
+              <h3>Confirma por WhatsApp</h3>
+              <p>El sistema abre WhatsApp con todo el resumen listo para cerrar tu reserva mas rapido.</p>
+            </article>
+          </div>
+
+          <div class="faq-shell reveal">
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>La cotizacion es definitiva?</span>
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Es una referencia premium basada en estilo, complejidad y
+                  agenda. El precio final puede ajustarse despues de revisar el
+                  diseno exacto y referencias.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Puedo apartar con anticipo?</span>
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Si. El resumen muestra un anticipo sugerido del 30% para
+                  apartar tu espacio una vez confirmes por WhatsApp.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                <span>Se pueden mandar referencias?</span>
+                <span>+</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Si. Puedes seleccionar archivos de referencia y el sistema
+                  incluira sus nombres en el mensaje para dar contexto al
+                  artista.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contacto">
+      <div class="container footer-grid">
+        <div>
+          <p class="eyebrow">Contacto directo</p>
+          <h2>Aro Tattoos</h2>
+          <p>
+            Agenda, cotiza y confirma desde esta experiencia. El cierre final se
+            hace directo por WhatsApp para no perder detalle de tu pieza.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#cotiza">Ir a cotizar</a>
+          <a href="https://wa.me/523318737958" target="_blank" rel="noreferrer">WhatsApp: +52 33 1873 7958</a>
+          <a href="https://instagram.com/aro_tattoos89s" target="_blank" rel="noreferrer">Instagram: @aro_tattoos89s</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
