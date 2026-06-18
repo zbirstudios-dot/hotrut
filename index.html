@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThunderBarber Studio | Reserva tu cita</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           VARIABLES — LIGHT THEME
+        ========================================= */
+        :root {
+            --bg-primary:    #F7F5F0;
+            --bg-secondary:  #FFFFFF;
+            --bg-accent:     #EFECE4;
+            --text-primary:  #1C1C1C;
+            --text-secondary:#5A5A5A;
+            --text-muted:    #9A9A9A;
+            --gold:          #B8974E;
+            --gold-light:    #D4AF6E;
+            --gold-dark:     #8B6914;
+            --border:        #E2DACE;
+            --border-strong: #C8C0B0;
+            --shadow-sm:  0 2px 8px  rgba(0,0,0,.06);
+            --shadow-md:  0 8px 32px rgba(0,0,0,.10);
+            --shadow-lg:  0 20px 60px rgba(0,0,0,.14);
+            --radius:    12px;
+            --radius-sm:  8px;
+            --radius-lg: 20px;
+        }
+
+        /* =========================================
+           RESET & BASE
+        ========================================= */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; font-size:16px; }
+        body {
+            font-family:'Inter', sans-serif;
+            background:var(--bg-primary);
+            color:var(--text-primary);
+            line-height:1.6;
+            overflow-x:hidden;
+        }
+        img { display:block; max-width:100%; }
+        a { color:inherit; }
+
+        /* =========================================
+           TYPOGRAPHY HELPERS
+        ========================================= */
+        h1, h2, h3 { font-family:'Playfair Display', serif; }
+        .display { font-family:'Bebas Neue', sans-serif; letter-spacing:.08em; }
+        .section-label {
+            display:block;
+            font-size:.75rem; font-weight:700;
+            letter-spacing:.2em; text-transform:uppercase;
+            color:var(--gold); margin-bottom:14px;
+        }
+        .section-title {
+            font-size:clamp(2rem,4vw,3rem);
+            font-weight:700; line-height:1.2;
+            margin-bottom:14px;
+        }
+        .section-subtitle {
+            font-size:1.05rem; color:var(--text-secondary);
+            max-width:540px; line-height:1.75;
+        }
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
+        section { padding:100px 24px; }
+        .container { max-width:1200px; margin:0 auto; }
+
+        /* =========================================
+           BUTTONS
+        ========================================= */
+        .btn-primary {
+            display:inline-flex; align-items:center; gap:10px;
+            background:var(--text-primary); color:#fff;
+            padding:14px 30px; border-radius:8px;
+            text-decoration:none; font-weight:600;
+            font-size:.9rem; letter-spacing:.05em; text-transform:uppercase;
+            border:2px solid var(--text-primary);
+            transition:all .3s ease;
+        }
+        .btn-primary:hover {
+            background:var(--gold); border-color:var(--gold);
+            transform:translateY(-2px);
+            box-shadow:0 8px 24px rgba(184,151,78,.3);
+        }
+        .btn-secondary {
+            display:inline-flex; align-items:center; gap:10px;
+            background:transparent; color:var(--text-primary);
+            padding:14px 30px; border-radius:8px;
+            text-decoration:none; font-weight:600;
+            font-size:.9rem; letter-spacing:.05em; text-transform:uppercase;
+            border:2px solid var(--border-strong);
+            transition:all .3s ease;
+        }
+        .btn-secondary:hover {
+            border-color:var(--text-primary);
+            transform:translateY(-2px);
+        }
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+        nav {
+            position:fixed; top:0; left:0; right:0; z-index:1000;
+            background:rgba(247,245,240,.95);
+            backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border);
+            transition:box-shadow .3s ease;
+        }
+        nav.scrolled { box-shadow:var(--shadow-sm); }
+        .nav-inner {
+            max-width:1200px; margin:0 auto; padding:0 24px;
+            display:flex; align-items:center; justify-content:space-between;
+            height:72px;
+        }
+        .nav-logo {
+            display:flex; align-items:center; gap:10px;
+            text-decoration:none;
+        }
+        .nav-logo-mark {
+            width:36px; height:36px;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:8px;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .nav-logo-mark svg { width:20px; height:20px; fill:#fff; }
+        .nav-logo-text {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:1.3rem; letter-spacing:.1em;
+            color:var(--text-primary);
+        }
+        .nav-links {
+            display:flex; align-items:center; gap:32px; list-style:none;
+        }
+        .nav-links a {
+            text-decoration:none; color:var(--text-secondary);
+            font-size:.82rem; font-weight:500;
+            letter-spacing:.06em; text-transform:uppercase;
+            transition:color .2s ease;
+        }
+        .nav-links a:hover { color:var(--gold); }
+        .nav-cta {
+            background:var(--text-primary) !important;
+            color:#fff !important;
+            padding:10px 22px; border-radius:6px;
+        }
+        .nav-cta:hover { background:var(--gold-dark) !important; color:#fff !important; }
+        .nav-toggle {
+            display:none; background:none; border:none;
+            cursor:pointer; color:var(--text-primary);
+        }
+
+        /* =========================================
+           HERO
+        ========================================= */
+        #hero {
+            min-height:100vh; display:flex; align-items:center;
+            padding-top:72px; position:relative; overflow:hidden;
+        }
+        #hero::before {
+            content:''; position:absolute; top:-20%; right:-10%;
+            width:600px; height:600px;
+            background:radial-gradient(circle, rgba(184,151,78,.08) 0%, transparent 70%);
+            pointer-events:none;
+        }
+        #hero::after {
+            content:''; position:absolute; bottom:-10%; left:-5%;
+            width:400px; height:400px;
+            background:radial-gradient(circle, rgba(184,151,78,.05) 0%, transparent 70%);
+            pointer-events:none;
+        }
+        .hero-content {
+            max-width:1200px; margin:0 auto; padding:0 24px;
+            display:grid; grid-template-columns:1fr 1fr;
+            gap:80px; align-items:center;
+        }
+        .hero-badge {
+            display:inline-flex; align-items:center; gap:8px;
+            background:rgba(184,151,78,.1);
+            border:1px solid rgba(184,151,78,.3);
+            padding:6px 16px; border-radius:100px;
+            font-size:.75rem; font-weight:700;
+            letter-spacing:.14em; text-transform:uppercase;
+            color:var(--gold-dark); margin-bottom:28px;
+        }
+        .badge-dot {
+            width:7px; height:7px; background:#22C55E;
+            border-radius:50%; animation:pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:.7; transform:scale(1.3); }
+        }
+        .hero-title {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:clamp(3rem,7vw,6.5rem);
+            letter-spacing:.04em; line-height:.95;
+            color:var(--text-primary); margin-bottom:10px;
+        }
+        .hero-title span { color:var(--gold); }
+        .hero-sub {
+            font-family:'Playfair Display', serif;
+            font-size:clamp(1rem,2vw,1.35rem);
+            color:var(--text-secondary); margin-bottom:24px;
+            font-style:italic;
+        }
+        .hero-desc {
+            font-size:1rem; color:var(--text-secondary);
+            line-height:1.8; margin-bottom:40px; max-width:460px;
+        }
+        .hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+
+        /* Hero visual card */
+        .hero-card {
+            background:#fff; border-radius:var(--radius-lg);
+            padding:40px; box-shadow:var(--shadow-lg);
+            border:1px solid var(--border);
+        }
+        .hero-card-head {
+            display:flex; align-items:center; gap:16px;
+            margin-bottom:32px; padding-bottom:24px;
+            border-bottom:1px solid var(--border);
+        }
+        .hero-card-icon {
+            width:56px; height:56px;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:12px; display:flex; align-items:center; justify-content:center;
+        }
+        .hero-card-icon svg { width:30px; height:30px; fill:#fff; }
+        .hero-card-name {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:1.4rem; letter-spacing:.08em;
+        }
+        .hero-card-sub { font-size:.78rem; color:var(--text-muted); }
+        .hero-stats {
+            display:grid; grid-template-columns:1fr 1fr; gap:16px;
+        }
+        .stat {
+            background:var(--bg-primary); border-radius:var(--radius);
+            padding:20px; border:1px solid var(--border);
+        }
+        .stat-num {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:2.4rem; color:var(--gold); line-height:1; margin-bottom:4px;
+        }
+        .stat-lbl {
+            font-size:.75rem; color:var(--text-muted);
+            letter-spacing:.06em; text-transform:uppercase;
+        }
+        .hero-location {
+            margin-top:24px; display:flex; align-items:center;
+            gap:10px; color:var(--text-secondary); font-size:.88rem;
+        }
+        .hero-location svg { width:16px; height:16px; fill:var(--gold); flex-shrink:0; }
+        .scroll-hint {
+            position:absolute; bottom:40px; left:50%;
+            transform:translateX(-50%);
+            display:flex; flex-direction:column; align-items:center; gap:8px;
+            color:var(--text-muted); font-size:.7rem;
+            letter-spacing:.15em; text-transform:uppercase;
+            animation:float 2s infinite;
+        }
+        .scroll-hint::after {
+            content:''; width:1px; height:40px;
+            background:linear-gradient(to bottom, var(--border-strong), transparent);
+        }
+        @keyframes float {
+            0%,100% { transform:translateX(-50%) translateY(0); }
+            50%      { transform:translateX(-50%) translateY(8px); }
+        }
+
+        /* =========================================
+           SERVICES
+        ========================================= */
+        #services { background:var(--bg-secondary); }
+        .services-header {
+            display:flex; justify-content:space-between;
+            align-items:flex-end; margin-bottom:60px;
+        }
+        .services-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(300px,1fr));
+            gap:24px;
+        }
+        .service-card {
+            background:var(--bg-primary); border-radius:var(--radius-lg);
+            padding:36px; border:1px solid var(--border);
+            transition:all .3s ease; position:relative; overflow:hidden;
+        }
+        .service-card::before {
+            content:''; position:absolute; top:0; left:0; right:0;
+            height:3px;
+            background:linear-gradient(to right, var(--gold), var(--gold-light));
+            opacity:0; transition:opacity .3s ease;
+        }
+        .service-card:hover {
+            transform:translateY(-4px); box-shadow:var(--shadow-lg);
+            border-color:rgba(184,151,78,.2);
+        }
+        .service-card:hover::before { opacity:1; }
+        .service-card.vip {
+            background:var(--text-primary); border-color:var(--text-primary);
+        }
+        .service-card.vip::before { opacity:1; }
+        .service-card.vip .service-num,
+        .service-card.vip .service-name,
+        .service-card.vip .service-price,
+        .service-card.vip .service-desc { color:#fff; }
+        .service-card.vip .service-duration {
+            background:rgba(255,255,255,.1); color:rgba(255,255,255,.7);
+            border-color:rgba(255,255,255,.15);
+        }
+        .service-ribbon {
+            position:absolute; top:20px; right:20px;
+            background:var(--gold); color:#fff;
+            padding:4px 12px; border-radius:100px;
+            font-size:.68rem; font-weight:700;
+            letter-spacing:.12em; text-transform:uppercase;
+        }
+        .service-num {
+            font-family:'Bebas Neue', sans-serif; font-size:3.5rem;
+            color:var(--border-strong); line-height:1; margin-bottom:18px;
+        }
+        .service-name {
+            font-family:'Playfair Display', serif;
+            font-size:1.35rem; font-weight:700; margin-bottom:10px;
+        }
+        .service-price {
+            font-family:'Bebas Neue', sans-serif; font-size:2rem;
+            color:var(--gold); letter-spacing:.05em; margin-bottom:14px;
+        }
+        .service-desc {
+            font-size:.88rem; color:var(--text-secondary);
+            line-height:1.7; margin-bottom:18px;
+        }
+        .service-duration {
+            display:inline-flex; align-items:center; gap:6px;
+            background:#fff; border:1px solid var(--border);
+            border-radius:100px; padding:5px 14px;
+            font-size:.76rem; color:var(--text-muted);
+        }
+        .service-duration svg { width:13px; height:13px; fill:currentColor; }
+
+        /* =========================================
+           BARBERS
+        ========================================= */
+        #barbers { background:var(--bg-primary); }
+        .barbers-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(210px,1fr));
+            gap:28px; margin-top:60px;
+        }
+        .barber-card {
+            background:var(--bg-secondary); border-radius:var(--radius-lg);
+            overflow:hidden; border:1px solid var(--border);
+            transition:all .3s ease;
+        }
+        .barber-card:hover {
+            transform:translateY(-6px); box-shadow:var(--shadow-lg);
+            border-color:rgba(184,151,78,.3);
+        }
+        .barber-photo {
+            width:100%; aspect-ratio:4/5; object-fit:cover; object-position:top;
+            background:var(--bg-accent);
+        }
+        .barber-placeholder {
+            width:100%; aspect-ratio:4/5;
+            background:linear-gradient(135deg, var(--bg-accent) 0%, var(--border) 100%);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .barber-initials {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:4.5rem; color:var(--border-strong); letter-spacing:.08em;
+        }
+        .barber-info { padding:24px; }
+        .barber-num {
+            font-size:.7rem; font-weight:700;
+            letter-spacing:.2em; text-transform:uppercase;
+            color:var(--gold); margin-bottom:6px;
+        }
+        .barber-name {
+            font-family:'Playfair Display', serif;
+            font-size:1.35rem; font-weight:700; margin-bottom:4px;
+        }
+        .barber-role {
+            font-size:.75rem; font-weight:600;
+            color:var(--text-muted); text-transform:uppercase;
+            letter-spacing:.1em; margin-bottom:10px;
+        }
+        .barber-exp {
+            display:flex; align-items:center; gap:7px;
+            font-size:.85rem; color:var(--text-secondary); margin-bottom:18px;
+        }
+        .exp-dot {
+            width:6px; height:6px; background:var(--gold);
+            border-radius:50%; flex-shrink:0;
+        }
+        .barber-btn {
+            display:block; text-align:center;
+            background:var(--text-primary); color:#fff;
+            padding:11px 20px; border-radius:8px;
+            text-decoration:none; font-size:.8rem; font-weight:600;
+            letter-spacing:.06em; text-transform:uppercase;
+            transition:background .3s ease;
+        }
+        .barber-btn:hover { background:var(--gold); }
+
+        /* =========================================
+           BOOKING
+        ========================================= */
+        #booking { background:var(--bg-secondary); }
+        .booking-layout {
+            display:grid; grid-template-columns:1fr 2fr;
+            gap:64px; align-items:start;
+        }
+        .booking-aside { position:sticky; top:100px; }
+        .booking-features { margin-top:36px; display:flex; flex-direction:column; gap:14px; }
+        .booking-feat {
+            display:flex; align-items:center; gap:14px;
+            padding:16px; background:var(--bg-primary);
+            border-radius:var(--radius); border:1px solid var(--border);
+        }
+        .feat-icon {
+            width:40px; height:40px; flex-shrink:0;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:8px; display:flex; align-items:center; justify-content:center;
+        }
+        .feat-icon svg { width:20px; height:20px; fill:#fff; }
+        .feat-text { font-size:.86rem; color:var(--text-secondary); line-height:1.5; }
+        .feat-title { font-weight:600; color:var(--text-primary); font-size:.9rem; }
+
+        /* Form */
+        .booking-form {
+            background:var(--bg-primary); border-radius:var(--radius-lg);
+            padding:48px; border:1px solid var(--border);
+        }
+        .form-block { margin-bottom:36px; }
+        .form-block-label {
+            font-size:.72rem; font-weight:700;
+            letter-spacing:.2em; text-transform:uppercase;
+            color:var(--gold); margin-bottom:16px;
+            display:flex; align-items:center; gap:10px;
+        }
+        .form-block-label::after { content:''; flex:1; height:1px; background:var(--border); }
+        .form-group { margin-bottom:18px; }
+        .form-label {
+            display:block; font-size:.8rem; font-weight:600;
+            color:var(--text-primary); margin-bottom:8px;
+            letter-spacing:.04em; text-transform:uppercase;
+        }
+        .form-select, .form-input {
+            width:100%; padding:13px 18px;
+            background:#fff; border:1px solid var(--border);
+            border-radius:var(--radius-sm);
+            font-family:'Inter', sans-serif; font-size:.95rem;
+            color:var(--text-primary); transition:all .2s ease;
+            appearance:none; -webkit-appearance:none;
+        }
+        .form-select:focus, .form-input:focus {
+            outline:none; border-color:var(--gold);
+            box-shadow:0 0 0 3px rgba(184,151,78,.12);
+        }
+        .select-wrap { position:relative; }
+        .select-wrap::after {
+            content:''; position:absolute; right:16px; top:50%;
+            transform:translateY(-50%); pointer-events:none;
+            border:5px solid transparent;
+            border-top-color:var(--text-muted);
+            margin-top:2px;
+        }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+        /* Calendar */
+        .calendar-wrap {
+            background:#fff; border-radius:var(--radius);
+            border:1px solid var(--border); overflow:hidden;
+        }
+        .cal-head {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px 18px; background:var(--bg-primary);
+            border-bottom:1px solid var(--border);
+        }
+        .cal-title {
+            font-family:'Playfair Display', serif;
+            font-size:1rem; font-weight:600;
+        }
+        .cal-nav {
+            width:32px; height:32px; background:none;
+            border:1px solid var(--border); border-radius:6px;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            color:var(--text-secondary); font-size:1.1rem;
+            transition:all .2s ease;
+        }
+        .cal-nav:hover { border-color:var(--gold); color:var(--gold); }
+        .cal-weekdays {
+            display:grid; grid-template-columns:repeat(7,1fr);
+            padding:10px 10px 0;
+        }
+        .cal-wday {
+            text-align:center; font-size:.68rem; font-weight:700;
+            letter-spacing:.1em; text-transform:uppercase;
+            color:var(--text-muted); padding:6px 0;
+        }
+        .cal-grid {
+            display:grid; grid-template-columns:repeat(7,1fr);
+            padding:6px 10px 14px; gap:3px;
+        }
+        .cal-day {
+            aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+            border-radius:8px; font-size:.86rem; cursor:pointer;
+            transition:all .2s ease; color:var(--text-primary);
+            font-weight:500; border:1px solid transparent;
+        }
+        .cal-day:hover:not(.disabled):not(.empty) {
+            background:var(--bg-primary); border-color:var(--border);
+        }
+        .cal-day.selected {
+            background:var(--text-primary); color:#fff;
+            border-color:var(--text-primary);
+        }
+        .cal-day.today { border-color:var(--gold); color:var(--gold); }
+        .cal-day.disabled { color:var(--text-muted); cursor:not-allowed; opacity:.35; }
+        .cal-day.empty { cursor:default; }
+
+        /* Time slots */
+        .slots-wrap {
+            background:#fff; border-radius:var(--radius);
+            border:1px solid var(--border); padding:18px;
+        }
+        .slots-msg {
+            text-align:center; color:var(--text-muted);
+            font-size:.86rem; padding:20px;
+        }
+        .slots-grid {
+            display:grid; grid-template-columns:repeat(4,1fr); gap:7px;
+        }
+        .slot {
+            padding:10px 4px; text-align:center;
+            border:1px solid var(--border); border-radius:var(--radius-sm);
+            font-size:.8rem; cursor:pointer; font-weight:500;
+            color:var(--text-secondary); transition:all .2s ease;
+        }
+        .slot:hover { border-color:var(--gold); color:var(--gold); }
+        .slot.selected { background:var(--text-primary); border-color:var(--text-primary); color:#fff; }
+        .form-hint { font-size:.75rem; color:var(--text-muted); margin-top:8px; }
+
+        /* Booking summary */
+        .booking-summary {
+            background:#fff; border:1px solid var(--border);
+            border-radius:var(--radius); padding:22px; margin-bottom:22px;
+        }
+        .summary-title {
+            font-size:.78rem; font-weight:700; letter-spacing:.12em;
+            text-transform:uppercase; color:var(--text-muted); margin-bottom:14px;
+        }
+        .summary-row {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:9px 0; border-bottom:1px solid var(--border);
+            font-size:.9rem;
+        }
+        .summary-row:last-child { border-bottom:none; }
+        .summary-key { color:var(--text-muted); }
+        .summary-val { font-weight:600; }
+        .summary-empty { text-align:center; color:var(--text-muted); font-size:.86rem; padding:12px; }
+
+        /* Submit */
+        .btn-book {
+            width:100%; padding:17px; background:var(--text-primary); color:#fff;
+            border:none; border-radius:var(--radius-sm);
+            font-family:'Inter', sans-serif; font-size:.95rem; font-weight:700;
+            letter-spacing:.08em; text-transform:uppercase;
+            cursor:pointer; transition:all .3s ease;
+        }
+        .btn-book:hover {
+            background:var(--gold); transform:translateY(-2px);
+            box-shadow:0 8px 24px rgba(184,151,78,.3);
+        }
+        .btn-book:disabled {
+            background:var(--border-strong); cursor:not-allowed;
+            transform:none; box-shadow:none;
+        }
+        .form-disclaimer {
+            text-align:center; font-size:.76rem; color:var(--text-muted);
+            margin-top:12px; line-height:1.6;
+        }
+
+        /* =========================================
+           PRODUCTS
+        ========================================= */
+        #products { background:var(--bg-primary); }
+        .products-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+            gap:24px; margin-top:60px;
+        }
+        .product-card {
+            background:var(--bg-secondary); border-radius:var(--radius-lg);
+            overflow:hidden; border:1px solid var(--border);
+            transition:all .3s ease; position:relative;
+        }
+        .product-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+        .product-tag {
+            position:absolute; top:14px; right:14px;
+            background:var(--gold); color:#fff;
+            padding:4px 12px; border-radius:100px;
+            font-size:.67rem; font-weight:700;
+            letter-spacing:.12em; text-transform:uppercase; z-index:1;
+        }
+        .product-tag.new { background:var(--text-primary); }
+        .product-img {
+            width:100%; height:190px;
+            background:linear-gradient(135deg, var(--bg-accent) 0%, var(--border) 100%);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .product-img-text {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:.95rem; letter-spacing:.15em;
+            color:var(--border-strong); text-align:center; padding:20px;
+            line-height:1.4;
+        }
+        .product-body { padding:22px; }
+        .product-brand {
+            font-size:.68rem; font-weight:700; letter-spacing:.2em;
+            text-transform:uppercase; color:var(--gold); margin-bottom:5px;
+        }
+        .product-name {
+            font-family:'Playfair Display', serif;
+            font-size:1.1rem; font-weight:700; margin-bottom:9px;
+        }
+        .product-desc {
+            font-size:.83rem; color:var(--text-secondary);
+            line-height:1.65; margin-bottom:18px;
+        }
+        .product-btn {
+            display:block; text-align:center;
+            background:var(--text-primary); color:#fff;
+            padding:11px 18px; border-radius:var(--radius-sm);
+            text-decoration:none; font-size:.8rem; font-weight:600;
+            letter-spacing:.06em; text-transform:uppercase;
+            transition:background .3s ease;
+        }
+        .product-btn:hover { background:var(--gold); }
+
+        /* =========================================
+           REVIEWS
+        ========================================= */
+        #reviews { background:var(--bg-secondary); }
+        .reviews-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(270px,1fr));
+            gap:24px; margin-top:60px;
+        }
+        .review-card {
+            background:var(--bg-primary); border-radius:var(--radius-lg);
+            padding:32px; border:1px solid var(--border);
+            transition:all .3s ease;
+        }
+        .review-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+        .review-stars { display:flex; gap:3px; margin-bottom:18px; }
+        .star { color:var(--gold); font-size:1.05rem; }
+        .review-text {
+            font-style:italic; color:var(--text-secondary);
+            line-height:1.8; margin-bottom:22px; font-size:.92rem;
+        }
+        .review-author { display:flex; align-items:center; gap:14px; }
+        .review-av {
+            width:44px; height:44px;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            font-weight:700; font-size:.82rem; color:#fff; flex-shrink:0;
+        }
+        .review-name { font-weight:600; font-size:.9rem; }
+        .review-service { font-size:.76rem; color:var(--text-muted); margin-top:2px; }
+
+        /* =========================================
+           LOCATION
+        ========================================= */
+        #location { background:var(--bg-primary); }
+        .location-grid {
+            display:grid; grid-template-columns:1fr 1fr;
+            gap:64px; align-items:start;
+        }
+        .location-details {
+            display:flex; flex-direction:column;
+            gap:22px; margin-top:40px;
+        }
+        .location-item { display:flex; align-items:flex-start; gap:16px; }
+        .loc-icon {
+            width:44px; height:44px; flex-shrink:0;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:10px; display:flex; align-items:center; justify-content:center;
+        }
+        .loc-icon svg { width:22px; height:22px; fill:#fff; }
+        .loc-label {
+            font-size:.75rem; font-weight:700; letter-spacing:.12em;
+            text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;
+        }
+        .loc-value { font-size:.95rem; line-height:1.6; }
+        .hours-list { display:flex; flex-direction:column; gap:7px; }
+        .hours-row { display:flex; justify-content:space-between; font-size:.9rem; }
+        .hours-day { color:var(--text-secondary); }
+        .hours-time { font-weight:600; }
+        .location-actions { display:flex; gap:12px; margin-top:32px; flex-wrap:wrap; }
+        .loc-map { border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); border:1px solid var(--border); }
+        .loc-map iframe { width:100%; height:460px; display:block; border:none; }
+
+        /* =========================================
+           SOCIAL
+        ========================================= */
+        #social { background:var(--bg-secondary); padding:80px 24px; }
+        .social-center { text-align:center; }
+        .social-row {
+            display:flex; justify-content:center; flex-wrap:wrap;
+            gap:16px; margin-top:40px;
+        }
+        .social-link {
+            display:flex; align-items:center; gap:10px;
+            background:var(--bg-primary); border:1px solid var(--border);
+            padding:14px 28px; border-radius:var(--radius);
+            text-decoration:none; color:var(--text-secondary);
+            font-size:.86rem; font-weight:600;
+            letter-spacing:.06em; text-transform:uppercase;
+            transition:all .3s ease;
+        }
+        .social-link:hover {
+            background:var(--text-primary); color:#fff;
+            border-color:var(--text-primary); transform:translateY(-2px);
+            box-shadow:var(--shadow-md);
+        }
+        .social-link svg { width:20px; height:20px; fill:currentColor; }
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+        footer {
+            background:var(--text-primary); color:#fff;
+            padding:60px 24px 40px;
+        }
+        .footer-inner { max-width:1200px; margin:0 auto; }
+        .footer-top {
+            display:grid; grid-template-columns:2fr 1fr 1fr;
+            gap:60px; padding-bottom:48px;
+            border-bottom:1px solid rgba(255,255,255,.1);
+        }
+        .footer-logo {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:1.8rem; letter-spacing:.08em; margin-bottom:12px;
+        }
+        .footer-logo span { color:var(--gold); }
+        .footer-desc { font-size:.86rem; color:rgba(255,255,255,.45); line-height:1.7; max-width:280px; }
+        .footer-col-title {
+            font-size:.72rem; font-weight:700; letter-spacing:.2em;
+            text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:18px;
+        }
+        .footer-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+        .footer-links a {
+            text-decoration:none; color:rgba(255,255,255,.55);
+            font-size:.88rem; transition:color .2s ease;
+        }
+        .footer-links a:hover { color:var(--gold-light); }
+        .footer-bottom {
+            display:flex; justify-content:space-between; align-items:center;
+            padding-top:32px; font-size:.78rem; color:rgba(255,255,255,.28);
+        }
+
+        /* =========================================
+           AVAILABILITY OVERLAY
+        ========================================= */
+        .avail-overlay {
+            position:fixed; inset:0;
+            background:rgba(28,28,28,.95); z-index:10000;
+            display:flex; align-items:center; justify-content:center;
+            opacity:0; pointer-events:none; transition:opacity .3s ease;
+        }
+        .avail-overlay.active { opacity:1; pointer-events:all; }
+        .avail-modal {
+            background:#fff; border-radius:var(--radius-lg);
+            padding:60px 48px; max-width:420px; width:90%;
+            text-align:center;
+        }
+        .avail-icon {
+            width:80px; height:80px;
+            background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            margin:0 auto 24px;
+        }
+        .avail-icon svg { width:40px; height:40px; fill:#fff; }
+        .avail-title {
+            font-family:'Bebas Neue', sans-serif;
+            font-size:1.8rem; letter-spacing:.08em;
+            color:var(--text-primary); margin-bottom:10px;
+        }
+        .avail-text { font-size:.9rem; color:var(--text-secondary); line-height:1.6; }
+        .avail-progress {
+            margin-top:30px; height:4px;
+            background:var(--bg-accent); border-radius:2px; overflow:hidden;
+        }
+        .avail-bar {
+            height:100%;
+            background:linear-gradient(to right, var(--gold), var(--gold-dark));
+            width:0%; transition:width .1s linear;
+        }
+
+        /* =========================================
+           WHATSAPP FAB
+        ========================================= */
+        .wa-fab {
+            position:fixed; bottom:32px; right:32px; z-index:999;
+            width:58px; height:58px; background:#25D366;
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            text-decoration:none; box-shadow:0 6px 20px rgba(37,211,102,.4);
+            transition:all .3s ease;
+        }
+        .wa-fab:hover { transform:scale(1.1); box-shadow:0 10px 28px rgba(37,211,102,.5); }
+        .wa-fab svg { width:28px; height:28px; fill:#fff; }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+        @media (max-width:1024px) {
+            .hero-content    { grid-template-columns:1fr; gap:48px; }
+            .booking-layout  { grid-template-columns:1fr; }
+            .booking-aside   { position:static; }
+            .location-grid   { grid-template-columns:1fr; }
+            .footer-top      { grid-template-columns:1fr 1fr; }
+        }
+        @media (max-width:768px) {
+            section { padding:72px 20px; }
+            .nav-links   { display:none; }
+            .nav-toggle  { display:flex; }
+            .hero-title  { font-size:clamp(2.5rem,10vw,4rem); }
+            .hero-actions { flex-direction:column; }
+            .services-header { flex-direction:column; align-items:flex-start; gap:14px; }
+            .booking-form { padding:28px 20px; }
+            .form-row     { grid-template-columns:1fr; }
+            .slots-grid   { grid-template-columns:repeat(3,1fr); }
+            .location-actions { flex-direction:column; }
+            .footer-top   { grid-template-columns:1fr; gap:36px; }
+            .footer-bottom { flex-direction:column; gap:10px; text-align:center; }
+            .barbers-grid { grid-template-columns:repeat(2,1fr); }
+        }
+        @media (max-width:480px) {
+            .barbers-grid { grid-template-columns:1fr; }
+            .slots-grid   { grid-template-columns:repeat(2,1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===================== NAV ===================== -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">
+                <div class="nav-logo-mark">
+                    <svg viewBox="0 0 24 24"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6.06-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5v-5l-2.28 2.28C7.23 18.09 6 15.17 6 12c0-4.08 3.05-7.44 7-7.93V2.05z"/></svg>
+                </div>
+                <span class="nav-logo-text">ThunderBarber</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#barbers">Barberos</a></li>
+                <li><a href="#products">Productos</a></li>
+                <li><a href="#reviews">Resenas</a></li>
+                <li><a href="#location">Ubicacion</a></li>
+                <li><a href="#booking" class="nav-cta">Agendar</a></li>
+            </ul>
+            <button class="nav-toggle" id="menuToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===================== HERO ===================== -->
+    <section id="hero">
+        <div class="hero-content">
+            <div>
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Abierto ahora
+                </div>
+                <h1 class="hero-title">THUNDER<span>BARBER</span><br>STUDIO</h1>
+                <p class="hero-sub">Zona Andares &middot; Lobby 33 &middot; Zapopan</p>
+                <p class="hero-desc">Cortes de precision. Experiencia sin igual. Reserva manual elegante, disponibilidad visual y confirmacion inmediata por WhatsApp.</p>
+                <div class="hero-actions">
+                    <a href="#booking" class="btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                        Agendar Cita
+                    </a>
+                    <a href="#services" class="btn-secondary">
+                        Ver Servicios
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="hero-card-head">
+                    <div class="hero-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6.06-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5v-5l-2.28 2.28C7.23 18.09 6 15.17 6 12c0-4.08 3.05-7.44 7-7.93V2.05z"/></svg>
+                    </div>
+                    <div>
+                        <div class="hero-card-name">ThunderBarber Studio</div>
+                        <div class="hero-card-sub">Premium Barber Experience</div>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-num">5</div>
+                        <div class="stat-lbl">Maestros Barberos</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">5</div>
+                        <div class="stat-lbl">Servicios Exclusivos</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">7</div>
+                        <div class="stat-lbl">Marcas Premium</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-num">4.9</div>
+                        <div class="stat-lbl">Calificacion Promedio</div>
+                    </div>
+                </div>
+                <div class="hero-location">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Lobby 33, Zona Andares, Zapopan, Jalisco
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">Scroll</div>
+    </section>
+
+    <!-- ===================== SERVICES ===================== -->
+    <section id="services">
+        <div class="container">
+            <div class="services-header">
+                <div>
+                    <span class="section-label">Lo que hacemos</span>
+                    <h2 class="section-title">Servicios</h2>
+                    <p class="section-subtitle">Cada servicio disenado para tu mejor version.</p>
+                </div>
+            </div>
+            <div class="services-grid">
+
+                <div class="service-card">
+                    <div class="service-num">01</div>
+                    <div class="service-name">Corte</div>
+                    <div class="service-price">$380 MXN</div>
+                    <p class="service-desc">Corte personalizado adaptado a tu estilo. Lavado, corte con tijera o maquina, definicion de lineas y secado profesional.</p>
+                    <span class="service-duration">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        30 &ndash; 45 MIN
+                    </span>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-num">02</div>
+                    <div class="service-name">Corte + Barba</div>
+                    <div class="service-price">$580 MXN</div>
+                    <p class="service-desc">Combo completo: corte personalizado mas perfilado y arreglo de barba con navaja, definicion y acabado con aceites.</p>
+                    <span class="service-duration">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        50 &ndash; 70 MIN
+                    </span>
+                </div>
+
+                <div class="service-card vip">
+                    <span class="service-ribbon">VIP</span>
+                    <div class="service-num">03</div>
+                    <div class="service-name">Corte VIP Thunder</div>
+                    <div class="service-price">$780 MXN</div>
+                    <p class="service-desc">Experiencia premium total: corte, barba, toalla caliente, masaje capilar, tratamiento profundo y bebida de cortesia.</p>
+                    <span class="service-duration">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        80 &ndash; 100 MIN
+                    </span>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-num">04</div>
+                    <div class="service-name">Barba</div>
+                    <div class="service-price">$380 MXN</div>
+                    <p class="service-desc">Diseno y arreglo de barba: perfilado con navaja, definicion de contornos, hidratacion con aceites y balsamo post-afeitado.</p>
+                    <span class="service-duration">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        25 &ndash; 35 MIN
+                    </span>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-num">05</div>
+                    <div class="service-name">Corte Nino</div>
+                    <div class="service-price">$280 MXN</div>
+                    <p class="service-desc">Servicio exclusivo para ninos con limite de edad hasta los 13 anos.</p>
+                    <span class="service-duration">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                        25 &ndash; 35 MIN
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== BARBERS ===================== -->
+    <section id="barbers">
+        <div class="container">
+            <span class="section-label">Nuestro equipo</span>
+            <h2 class="section-title">Los Barberos</h2>
+            <p class="section-subtitle">Maestros del oficio con anos de experiencia.</p>
+            <div class="barbers-grid">
+
+                <div class="barber-card">
+                    <div class="barber-placeholder">
+                        <span class="barber-initials">AL</span>
+                    </div>
+                    <div class="barber-info">
+                        <div class="barber-num">01</div>
+                        <div class="barber-name">Alvaro</div>
+                        <div class="barber-role">Barber</div>
+                        <div class="barber-exp"><span class="exp-dot"></span>2 anos de experiencia</div>
+                        <a href="#booking" class="barber-btn" onclick="setBarber('Alvaro')">Agendar con Alvaro</a>
+                    </div>
+                </div>
+
+                <div class="barber-card">
+                    <div class="barber-placeholder">
+                        <span class="barber-initials">SOL</span>
+                    </div>
+                    <div class="barber-info">
+                        <div class="barber-num">02</div>
+                        <div class="barber-name">Sol</div>
+                        <div class="barber-role">Senior Barber</div>
+                        <div class="barber-exp"><span class="exp-dot"></span>10 anos de experiencia</div>
+                        <a href="#booking" class="barber-btn" onclick="setBarber('Sol')">Agendar con Sol</a>
+                    </div>
+                </div>
+
+                <div class="barber-card">
+                    <div class="barber-placeholder">
+                        <span class="barber-initials">DAN</span>
+                    </div>
+                    <div class="barber-info">
+                        <div class="barber-num">03</div>
+                        <div class="barber-name">Daniel</div>
+                        <div class="barber-role">Barber</div>
+                        <div class="barber-exp"><span class="exp-dot"></span>10 anos de experiencia</div>
+                        <a href="#booking" class="barber-btn" onclick="setBarber('Daniel')">Agendar con Daniel</a>
+                    </div>
+                </div>
+
+                <div class="barber-card">
+                    <div class="barber-placeholder">
+                        <span class="barber-initials">CAL</span>
+                    </div>
+                    <div class="barber-info">
+                        <div class="barber-num">04</div>
+                        <div class="barber-name">Caleb</div>
+                        <div class="barber-role">Barber Artist</div>
+                        <div class="barber-exp"><span class="exp-dot"></span>17 anos de experiencia</div>
+                        <a href="#booking" class="barber-btn" onclick="setBarber('Caleb')">Agendar con Caleb</a>
+                    </div>
+                </div>
+
+                <div class="barber-card">
+                    <img src="https://i.postimg.cc/0Q7X4q9j/5017192865058196674.jpg"
+                         alt="Raul — Barber"
+                         class="barber-photo">
+                    <div class="barber-info">
+                        <div class="barber-num">05</div>
+                        <div class="barber-name">Raul</div>
+                        <div class="barber-role">Barber</div>
+                        <div class="barber-exp"><span class="exp-dot"></span>3 anos de experiencia</div>
+                        <a href="#booking" class="barber-btn" onclick="setBarber('Raul')">Agendar con Raul</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== BOOKING ===================== -->
+    <section id="booking">
+        <div class="container">
+            <div class="booking-layout">
+
+                <!-- Aside info -->
+                <div class="booking-aside">
+                    <span class="section-label">Agenda en linea</span>
+                    <h2 class="section-title">Reserva tu Cita</h2>
+                    <p class="section-subtitle">Calendario manual con seleccion de fecha, barbero, horario y envio inmediato a WhatsApp.</p>
+                    <div class="booking-features">
+                        <div class="booking-feat">
+                            <div class="feat-icon">
+                                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.337 21.703c1.352.618 2.834.975 4.363 1.002.058 0 .115.001.173.001a13.84 13.84 0 0 0 9.95-4.155A13.845 13.845 0 0 0 23.703 8.7C23.39 3.87 19.348.096 14.519.003 6.571-.14.194 6.089.003 14.037-.038 15.748.22 17.411.72 18.982l-1.03 3.742 3.647-.021z"/></svg>
+                            </div>
+                            <div class="feat-text">
+                                <div class="feat-title">Confirmacion por WhatsApp</div>
+                                Envio inmediato con todos los datos de tu cita
+                            </div>
+                        </div>
+                        <div class="booking-feat">
+                            <div class="feat-icon">
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                            </div>
+                            <div class="feat-text">
+                                <div class="feat-title">Horarios en Tiempo Real</div>
+                                Slots que respetan el horario del estudio
+                            </div>
+                        </div>
+                        <div class="booking-feat">
+                            <div class="feat-icon">
+                                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                            </div>
+                            <div class="feat-text">
+                                <div class="feat-title">Calendario Manual</div>
+                                Seleccion visual de fecha y horario disponible
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="booking-form">
+
+                    <!-- Barbero -->
+                    <div class="form-block">
+                        <div class="form-block-label">Barbero</div>
+                        <div class="form-group">
+                            <label class="form-label" for="selBarbero">Selecciona tu barbero</label>
+                            <div class="select-wrap">
+                                <select class="form-select" id="selBarbero" onchange="onBarberChange()">
+                                    <option value="">-- Selecciona tu barbero --</option>
+                                    <option value="Alvaro">Alvaro</option>
+                                    <option value="Sol">Sol</option>
+                                    <option value="Daniel">Daniel</option>
+                                    <option value="Caleb">Caleb</option>
+                                    <option value="Raul">Raul</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio -->
+                    <div class="form-block">
+                        <div class="form-block-label">Servicio</div>
+                        <div class="form-group">
+                            <label class="form-label" for="selServicio">Selecciona el servicio</label>
+                            <div class="select-wrap">
+                                <select class="form-select" id="selServicio" onchange="updateSummary()">
+                                    <option value="">-- Selecciona el servicio --</option>
+                                    <option value="Corte · $380 MXN">Corte &mdash; $380 MXN</option>
+                                    <option value="Corte + Barba · $580 MXN">Corte + Barba &mdash; $580 MXN</option>
+                                    <option value="Corte VIP Thunder · $780 MXN">Corte VIP Thunder &mdash; $780 MXN</option>
+                                    <option value="Barba · $380 MXN">Barba &mdash; $380 MXN</option>
+                                    <option value="Corte Nino · $280 MXN">Corte Nino &mdash; $280 MXN</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div class="form-block">
+                        <div class="form-block-label">Dia y Fecha</div>
+                        <div class="form-group">
+                            <label class="form-label">Selecciona una fecha</label>
+                            <div class="calendar-wrap">
+                                <div class="cal-head">
+                                    <button class="cal-nav" onclick="prevMonth()" type="button">&lsaquo;</button>
+                                    <div class="cal-title" id="calTitle">Junio 2026</div>
+                                    <button class="cal-nav" onclick="nextMonth()" type="button">&rsaquo;</button>
+                                </div>
+                                <div class="cal-weekdays">
+                                    <div class="cal-wday">Dom</div>
+                                    <div class="cal-wday">Lun</div>
+                                    <div class="cal-wday">Mar</div>
+                                    <div class="cal-wday">Mie</div>
+                                    <div class="cal-wday">Jue</div>
+                                    <div class="cal-wday">Vie</div>
+                                    <div class="cal-wday">Sab</div>
+                                </div>
+                                <div class="cal-grid" id="calGrid"></div>
+                            </div>
+                            <p class="form-hint">El horario cambia automaticamente segun el dia elegido.</p>
+                        </div>
+                    </div>
+
+                    <!-- Horario -->
+                    <div class="form-block">
+                        <div class="form-block-label">Horario Disponible</div>
+                        <div class="slots-wrap" id="slotsWrap">
+                            <p class="slots-msg">Primero selecciona un barbero y una fecha.</p>
+                        </div>
+                        <p class="form-hint">Lun–Vie 9:00–20:00 &nbsp;|&nbsp; Sab 9:00–19:00 &nbsp;|&nbsp; Dom 10:00–16:00</p>
+                    </div>
+
+                    <!-- Datos -->
+                    <div class="form-block">
+                        <div class="form-block-label">Tus Datos</div>
+                        <div class="form-group">
+                            <label class="form-label" for="inpNombre">Nombre</label>
+                            <input type="text" class="form-input" id="inpNombre" placeholder="Tu nombre" oninput="updateSummary()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="inpApellido">Apellido</label>
+                            <input type="text" class="form-input" id="inpApellido" placeholder="Tu apellido" oninput="updateSummary()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="inpTelefono">Telefono</label>
+                            <input type="tel" class="form-input" id="inpTelefono" placeholder="Tu numero de telefono" oninput="updateSummary()">
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="booking-summary" id="bookSummary">
+                        <div class="summary-empty">Selecciona barbero, fecha y hora para ver el resumen de tu cita.</div>
+                    </div>
+
+                    <button class="btn-book" id="btnBook" onclick="submitBooking()" disabled type="button">
+                        Reservar Cita via WhatsApp
+                    </button>
+                    <p class="form-disclaimer">Al continuar te redirigiremos a WhatsApp al numero +52 33 2598 3247 con toda la informacion lista para enviar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== PRODUCTS ===================== -->
+    <section id="products">
+        <div class="container">
+            <span class="section-label">Para tu estilo</span>
+            <h2 class="section-title">Productos</h2>
+            <p class="section-subtitle">Las mejores marcas del mundo del grooming.</p>
+            <div class="products-grid">
+
+                <div class="product-card">
+                    <span class="product-tag">Bestseller</span>
+                    <div class="product-img"><div class="product-img-text">Thunder Labs<br>Polvo Texturizador</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">Thunder Labs</div>
+                        <div class="product-name">Polvo Texturizador</div>
+                        <p class="product-desc">Volumen radical y acabado mate instantaneo. Textura ligera sin residuos para un control total.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img"><div class="product-img-text">Thunder Labs<br>Shaving Gel</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">Thunder Labs</div>
+                        <div class="product-name">Shaving Gel</div>
+                        <p class="product-desc">Transparencia total para un delineado perfecto. Maximo deslizamiento, hidratacion y frescura sin espuma.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-tag new">Nuevo</span>
+                    <div class="product-img"><div class="product-img-text">Layrite<br>Beard Balm</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">Layrite</div>
+                        <div class="product-name">Beard Balm</div>
+                        <p class="product-desc">Hidratacion profunda y control total de la barba. Suaviza el vello rebelde y aporta brillo natural.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img"><div class="product-img-text">L3VEL3<br>Hair Gel</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">L3VEL3</div>
+                        <div class="product-name">Hair Gel</div>
+                        <p class="product-desc">Fijacion extrema y brillo intenso durante todo el dia. Formula sin residuos para peinados estructurados.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img"><div class="product-img-text">L3VEL3<br>Cream Gel</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">L3VEL3</div>
+                        <div class="product-name">Cream Gel</div>
+                        <p class="product-desc">Equilibrio perfecto entre fijacion y flexibilidad. Volumen con brillo natural y manejabilidad sin rigidez.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <span class="product-tag new">Nuevo</span>
+                    <div class="product-img"><div class="product-img-text">L3VEL3<br>Hair Fiber Spray</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">L3VEL3</div>
+                        <div class="product-name">Hair Fiber Spray</div>
+                        <p class="product-desc">Fijacion maxima para fibras capilares. Resiste el viento y el sudor con apariencia natural y duradera.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img"><div class="product-img-text">L3VEL3<br>Salt Spray</div></div>
+                    <div class="product-body">
+                        <div class="product-brand">L3VEL3</div>
+                        <div class="product-name">Texturizing Salt Spray</div>
+                        <p class="product-desc">Volumen natural con efecto playero y acabado mate. Define las ondas sin endurecer el cabello.</p>
+                        <a href="#" class="product-btn">Comprar</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== REVIEWS ===================== -->
+    <section id="reviews">
+        <div class="container">
+            <span class="section-label">Lo que dicen</span>
+            <h2 class="section-title">Resenas</h2>
+            <p class="section-subtitle">La experiencia habla por si sola.</p>
+            <div class="reviews-grid">
+
+                <div class="review-card">
+                    <div class="review-stars">
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                    </div>
+                    <p class="review-text">"El mejor corte que me han hecho en anos. Alvaro entendio exactamente lo que queria sin que yo tuviera que explicar mucho. El ambiente del lugar es increible."</p>
+                    <div class="review-author">
+                        <div class="review-av">JM</div>
+                        <div>
+                            <div class="review-name">Jorge M.</div>
+                            <div class="review-service">Corte VIP Thunder</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-stars">
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                    </div>
+                    <p class="review-text">"Vine por la barba y sali con corte tambien. Sol es un artista. El lugar esta super bien ubicado en Andares y la atencion es de primera. Ya no voy a otro lado."</p>
+                    <div class="review-author">
+                        <div class="review-av">RA</div>
+                        <div>
+                            <div class="review-name">Rodrigo A.</div>
+                            <div class="review-service">Corte + Barba</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-stars">
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                    </div>
+                    <p class="review-text">"La experiencia VIP vale cada peso. Toalla caliente, masaje, bebida... uno se siente tratado como rey. Daniel tiene manos magicas. 100% recomendado."</p>
+                    <div class="review-author">
+                        <div class="review-av">CF</div>
+                        <div>
+                            <div class="review-name">Carlos F.</div>
+                            <div class="review-service">Corte VIP Thunder</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-stars">
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                    </div>
+                    <p class="review-text">"Agende por WhatsApp en segundos. Caleb es muy preciso con las lineas y el fade quedo perfecto. El estudio tiene un estilo unico, muy cool."</p>
+                    <div class="review-author">
+                        <div class="review-av">LV</div>
+                        <div>
+                            <div class="review-name">Luis V.</div>
+                            <div class="review-service">Corte &middot; Fade</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== LOCATION ===================== -->
+    <section id="location">
+        <div class="container">
+            <div class="location-grid">
+                <div>
+                    <span class="section-label">Encuentranos</span>
+                    <h2 class="section-title">Ubicacion</h2>
+                    <p class="section-subtitle">En el corazon de Zona Andares, Zapopan.</p>
+                    <div class="location-details">
+
+                        <div class="location-item">
+                            <div class="loc-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            </div>
+                            <div>
+                                <div class="loc-label">Direccion</div>
+                                <div class="loc-value">ThunderBarber Studio, Lobby 33,<br>Zona Andares, Zapopan, Jalisco</div>
+                            </div>
+                        </div>
+
+                        <div class="location-item">
+                            <div class="loc-icon">
+                                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            </div>
+                            <div>
+                                <div class="loc-label">WhatsApp</div>
+                                <div class="loc-value">+52 33 2598 3247</div>
+                            </div>
+                        </div>
+
+                        <div class="location-item">
+                            <div class="loc-icon">
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                            </div>
+                            <div>
+                                <div class="loc-label">Horarios</div>
+                                <div class="loc-value">
+                                    <div class="hours-list">
+                                        <div class="hours-row">
+                                            <span class="hours-day">Lunes a Viernes</span>
+                                            <span class="hours-time">09:00 &ndash; 20:00</span>
+                                        </div>
+                                        <div class="hours-row">
+                                            <span class="hours-day">Sabado</span>
+                                            <span class="hours-time">09:00 &ndash; 19:00</span>
+                                        </div>
+                                        <div class="hours-row">
+                                            <span class="hours-day">Domingo</span>
+                                            <span class="hours-time">10:00 &ndash; 16:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="location-actions">
+                        <a href="https://wa.me/523325983247" class="btn-primary" target="_blank" rel="noopener">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.337 21.703c1.352.618 2.834.975 4.363 1.002.058 0 .115.001.173.001a13.84 13.84 0 0 0 9.95-4.155A13.845 13.845 0 0 0 23.703 8.7C23.39 3.87 19.348.096 14.519.003 6.571-.14.194 6.089.003 14.037-.038 15.748.22 17.411.72 18.982l-1.03 3.742 3.647-.021z"/></svg>
+                            WhatsApp
+                        </a>
+                        <a href="#booking" class="btn-secondary">Agendar Cita</a>
+                    </div>
+                </div>
+                <div class="loc-map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3730.6!2d-103.4121!3d20.7170!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428ae5e4b5c1a01%3A0x3f6b3b6c3b6c3b6c!2sLobby%2033%2C%20Zona%20Andares%2C%20Zapopan%2C%20Jal.!5e0!3m2!1ses!2smx!4v1718000000000"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SOCIAL ===================== -->
+    <section id="social">
+        <div class="container">
+            <div class="social-center">
+                <span class="section-label">Siguenos</span>
+                <h2 class="section-title">Redes Sociales</h2>
+                <p class="section-subtitle" style="margin:0 auto;">Mantente al dia con nuestro trabajo y las ultimas tendencias.</p>
+                <div class="social-row">
+                    <a href="https://wa.me/523325983247" class="social-link" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.337 21.703c1.352.618 2.834.975 4.363 1.002.058 0 .115.001.173.001a13.84 13.84 0 0 0 9.95-4.155A13.845 13.845 0 0 0 23.703 8.7C23.39 3.87 19.348.096 14.519.003 6.571-.14.194 6.089.003 14.037-.038 15.748.22 17.411.72 18.982l-1.03 3.742 3.647-.021z"/></svg>
+                        WhatsApp &nbsp;&middot;&nbsp; +52 33 2598 3247
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div>
+                    <div class="footer-logo">THUNDER<span>BARBER</span> STUDIO</div>
+                    <p class="footer-desc">Cortes de precision, experiencia premium y atencion de primera en el corazon de Zona Andares, Zapopan.</p>
+                </div>
+                <div>
+                    <div class="footer-col-title">Servicios</div>
+                    <ul class="footer-links">
+                        <li><a href="#services">Corte &mdash; $380</a></li>
+                        <li><a href="#services">Corte + Barba &mdash; $580</a></li>
+                        <li><a href="#services">Corte VIP Thunder &mdash; $780</a></li>
+                        <li><a href="#services">Barba &mdash; $380</a></li>
+                        <li><a href="#services">Corte Nino &mdash; $280</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-col-title">Estudio</div>
+                    <ul class="footer-links">
+                        <li><a href="#barbers">Nuestro equipo</a></li>
+                        <li><a href="#booking">Reservar cita</a></li>
+                        <li><a href="#products">Productos</a></li>
+                        <li><a href="#reviews">Resenas</a></li>
+                        <li><a href="#location">Ubicacion</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 ThunderBarber Studio. Todos los derechos reservados.</span>
+                <span>Lobby 33, Zona Andares, Zapopan, Jalisco</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===================== AVAILABILITY OVERLAY ===================== -->
+    <div class="avail-overlay" id="availOverlay">
+        <div class="avail-modal">
+            <div class="avail-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <div class="avail-title">Verificando Disponibilidad</div>
+            <p class="avail-text">Consultando la agenda del barbero y preparando tu cita para WhatsApp...</p>
+            <div class="avail-progress">
+                <div class="avail-bar" id="availBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== WHATSAPP FAB ===================== -->
+    <a href="https://wa.me/523325983247" class="wa-fab" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.337 21.703c1.352.618 2.834.975 4.363 1.002.058 0 .115.001.173.001a13.84 13.84 0 0 0 9.95-4.155A13.845 13.845 0 0 0 23.703 8.7C23.39 3.87 19.348.096 14.519.003 6.571-.14.194 6.089.003 14.037-.038 15.748.22 17.411.72 18.982l-1.03 3.742 3.647-.021z"/></svg>
+    </a>
+
+    <!-- ===================== SCRIPTS ===================== -->
+    <script>
+    (function () {
+        'use strict';
+
+        /* ---- State ---- */
+        var S = {
+            year:  new Date().getFullYear(),
+            month: new Date().getMonth(),
+            date:  null,
+            time:  null,
+            barber:  '',
+            service: ''
+        };
+
+        var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                      'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+        /* ---- Navbar scroll ---- */
+        window.addEventListener('scroll', function () {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        /* ---- Expose to inline onclick handlers ---- */
+        window.setBarber = function (name) {
+            document.getElementById('selBarbero').value = name;
+            S.barber = name;
+            renderSlots();
+            updateSummary();
+        };
+
+        window.onBarberChange = function () {
+            S.barber = document.getElementById('selBarbero').value;
+            renderSlots();
+            updateSummary();
+        };
+
+        window.prevMonth = function () {
+            S.month--;
+            if (S.month < 0) { S.month = 11; S.year--; }
+            renderCalendar();
+        };
+
+        window.nextMonth = function () {
+            S.month++;
+            if (S.month > 11) { S.month = 0; S.year++; }
+            renderCalendar();
+        };
+
+        window.updateSummary = updateSummary;
+        window.submitBooking = submitBooking;
+
+        /* ---- Calendar ---- */
+        function renderCalendar() {
+            document.getElementById('calTitle').textContent = MONTHS[S.month] + ' ' + S.year;
+
+            var grid  = document.getElementById('calGrid');
+            grid.innerHTML = '';
+
+            var today     = new Date(); today.setHours(0,0,0,0);
+            var firstDay  = new Date(S.year, S.month, 1).getDay();
+            var daysTotal = new Date(S.year, S.month + 1, 0).getDate();
+
+            for (var i = 0; i < firstDay; i++) {
+                var e = document.createElement('div');
+                e.className = 'cal-day empty';
+                grid.appendChild(e);
+            }
+
+            for (var d = 1; d <= daysTotal; d++) {
+                (function (day) {
+                    var cell = document.createElement('div');
+                    cell.className = 'cal-day';
+                    cell.textContent = day;
+
+                    var dt = new Date(S.year, S.month, day);
+                    dt.setHours(0,0,0,0);
+
+                    if (dt < today) {
+                        cell.classList.add('disabled');
+                    } else {
+                        if (dt.getTime() === today.getTime()) cell.classList.add('today');
+
+                        if (S.date &&
+                            S.date.getFullYear() === S.year &&
+                            S.date.getMonth()    === S.month &&
+                            S.date.getDate()     === day) {
+                            cell.classList.add('selected');
+                        }
+
+                        cell.addEventListener('click', function () {
+                            S.date = new Date(S.year, S.month, day);
+                            S.time = null;
+                            renderCalendar();
+                            renderSlots();
+                            updateSummary();
+                        });
+                    }
+                    grid.appendChild(cell);
+                })(d);
+            }
+        }
+
+        /* ---- Time Slots ---- */
+        function renderSlots() {
+            var wrap = document.getElementById('slotsWrap');
+
+            if (!S.date || !S.barber) {
+                wrap.innerHTML = '<p class="slots-msg">Primero selecciona un barbero y una fecha.</p>';
+                return;
+            }
+
+            var dow = S.date.getDay();
+            var startH, endH;
+
+            if (dow === 0)      { startH = 10; endH = 16; }
+            else if (dow === 6) { startH = 9;  endH = 19; }
+            else                { startH = 9;  endH = 20; }
+
+            var sgrid = document.createElement('div');
+            sgrid.className = 'slots-grid';
+
+            for (var h = startH; h < endH; h++) {
+                ['00','30'].forEach(function (m) {
+                    var t    = pad(h) + ':' + m;
+                    var slot = document.createElement('div');
+                    slot.className = 'slot' + (S.time === t ? ' selected' : '');
+                    slot.textContent = t;
+                    (function (time) {
+                        slot.addEventListener('click', function () {
+                            S.time = time;
+                            renderSlots();
+                            updateSummary();
+                        });
+                    })(t);
+                    sgrid.appendChild(slot);
+                });
+            }
+
+            wrap.innerHTML = '';
+            wrap.appendChild(sgrid);
+        }
+
+        function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+        /* ---- Summary ---- */
+        function updateSummary() {
+            var barbero  = document.getElementById('selBarbero').value;
+            var servicio = document.getElementById('selServicio').value;
+            var nombre   = document.getElementById('inpNombre').value.trim();
+            var apellido = document.getElementById('inpApellido').value.trim();
+            var telefono = document.getElementById('inpTelefono').value.trim();
+
+            S.barber  = barbero;
+            S.service = servicio;
+
+            var sumEl  = document.getElementById('bookSummary');
+            var btnEl  = document.getElementById('btnBook');
+            var hasAll = barbero && servicio && S.date && S.time && nombre;
+
+            if (!hasAll) {
+                sumEl.innerHTML = '<div class="summary-empty">Selecciona barbero, fecha y hora para ver el resumen de tu cita.</div>';
+                btnEl.disabled = true;
+                return;
+            }
+
+            var dateStr = S.date.toLocaleDateString('es-MX', {
+                weekday:'long', year:'numeric', month:'long', day:'numeric'
+            });
+
+            var rows = [
+                { k: 'Barbero',  v: barbero  },
+                { k: 'Servicio', v: servicio },
+                { k: 'Fecha',    v: dateStr  },
+                { k: 'Hora',     v: S.time   },
+                { k: 'Nombre',   v: nombre + (apellido ? ' ' + apellido : '') }
+            ];
+            if (telefono) rows.push({ k: 'Telefono', v: telefono });
+
+            var html = '<div class="summary-title">Resumen de tu cita</div>';
+            rows.forEach(function (r) {
+                html += '<div class="summary-row">'
+                      + '<span class="summary-key">' + r.k + '</span>'
+                      + '<span class="summary-val">' + r.v + '</span>'
+                      + '</div>';
+            });
+
+            sumEl.innerHTML = html;
+            btnEl.disabled = false;
+        }
+
+        /* ---- Submit ---- */
+        function submitBooking() {
+            var barbero  = document.getElementById('selBarbero').value;
+            var servicio = document.getElementById('selServicio').value;
+            var nombre   = document.getElementById('inpNombre').value.trim();
+            var apellido = document.getElementById('inpApellido').value.trim();
+            var telefono = document.getElementById('inpTelefono').value.trim();
+
+            if (!barbero || !servicio || !S.date || !S.time || !nombre) return;
+
+            var overlay = document.getElementById('availOverlay');
+            var bar     = document.getElementById('availBar');
+
+            overlay.classList.add('active');
+            bar.style.width = '0%';
+
+            var progress = 0;
+            var iv = setInterval(function () {
+                progress += 2;
+                bar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(iv);
+                    setTimeout(function () {
+                        overlay.classList.remove('active');
+                        bar.style.width = '0%';
+                        sendWA(barbero, servicio, nombre, apellido, telefono);
+                    }, 400);
+                }
+            }, 40);
+        }
+
+        function sendWA(barbero, servicio, nombre, apellido, telefono) {
+            var dateStr = S.date.toLocaleDateString('es-MX', {
+                weekday:'long', year:'numeric', month:'long', day:'numeric'
+            });
+            var msg = 'Hola ThunderBarber Studio! Quiero reservar una cita:\n\n'
+                + 'Nombre: '   + nombre + (apellido ? ' ' + apellido : '') + '\n'
+                + 'Telefono: ' + (telefono || 'No proporcionado') + '\n'
+                + 'Barbero: '  + barbero  + '\n'
+                + 'Servicio: ' + servicio + '\n'
+                + 'Fecha: '    + dateStr  + '\n'
+                + 'Hora: '     + S.time   + '\n\n'
+                + 'Confirmo que los datos son correctos.';
+
+            window.open('https://wa.me/523325983247?text=' + encodeURIComponent(msg), '_blank');
+        }
+
+        /* ---- Init ---- */
+        renderCalendar();
+
+    })();
+    </script>
+</body>
+</html>
