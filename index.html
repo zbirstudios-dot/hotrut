@@ -236,34 +236,19 @@ section{padding:clamp(60px,8vw,104px) clamp(20px,5vw,40px);position:relative}
 .hero-eyebrow{font-size:11px;letter-spacing:7px;color:var(--g1);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:12px;animation:fadey .8s ease .2s both}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--g1))}
 .hero-eyebrow::after{background:linear-gradient(90deg,var(--g1),transparent)}
-.hero-brand{
-  position:relative;
-  width:min(360px,68vw);
-  margin:6px auto 10px;
-  padding:0;
-  animation:fadey .8s ease .4s both;
-  background:none;
-  border:none;
-  border-radius:0;
-  box-shadow:none;
-}
-.hero-brand::before{
-  content:none;
-  position:absolute;
-  inset:10% 12%;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(201,168,76,.22) 0%,rgba(201,168,76,.08) 45%,transparent 72%);
-  filter:blur(24px);
-  animation:hero-breathe 5s ease-in-out infinite;
-}
 .hero-brand-img{
   position:relative;
   z-index:1;
-  width:100%;
+  width:min(360px,68vw);
+  margin:6px auto 10px;
   height:auto;
   display:block;
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
   filter:drop-shadow(0 0 36px rgba(201,168,76,.18)) drop-shadow(0 0 14px rgba(245,224,160,.15));
-  animation:brand-float 3.4s ease-in-out infinite;
+  animation:brand-float 3.4s ease-in-out infinite, fadey .8s ease .4s both;
 }
 @keyframes brand-float{
   0%,100%{
@@ -838,18 +823,24 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     width:min(100%,420px);
     margin:0 auto;
   }
-  .hero-brand{
-    width:min(320px,78vw);
-    margin:10px auto 0;
-    padding:0;
-  }
-  .hero-brand::before,
   .hero-glow,
   .hero-orb,
   .hero-scroll{
     display:none;
   }
+  .status-badge,
+  .hero-eyebrow,
+  .hero-brand-img,
+  .hero-sep,
+  .hero-tag,
+  .hero-micro,
+  .hero-cta{
+    animation:none !important;
+    transform:none !important;
+  }
   .hero-brand-img{
+    width:min(320px,78vw);
+    margin:10px auto 0;
     animation:none;
     transform:none;
   }
@@ -959,16 +950,6 @@ body::after{
 .hero-glow{background:radial-gradient(ellipse,rgba(184,132,54,.18) 0%,transparent 70%)}
 .hero-orb{mix-blend-mode:normal;background:radial-gradient(circle,rgba(255,232,188,.85),transparent 65%)}
 .hero-corner{opacity:.55}
-.hero-brand{
-  padding:0 !important;
-  background:none !important;
-  border:none !important;
-  border-radius:0 !important;
-  box-shadow:none !important;
-}
-.hero-brand::before{
-  content:none !important;
-}
 .hero-brand-img{filter:drop-shadow(0 18px 28px rgba(184,132,54,.14))}
 .hero-sep{height:72px}
 .hero-micro{max-width:640px;margin:0 auto 32px;color:var(--text3)}
@@ -1131,7 +1112,7 @@ footer{border-top:1px solid var(--border)}
 
 <div id="loader">
   <div class="ld-name">
-    <img class="ld-name-img" src="https://i.postimg.cc/HsPnRRYP/5170344977853690156-1-removebg-preview.png" alt="ThunderBarber Studio">
+    <img class="ld-name-img" src="./logo-thunder-clean.png" alt="ThunderBarber Studio">
   </div>
   <div class="ld-track"><div class="ld-fill"></div></div>
 </div>
@@ -1143,7 +1124,7 @@ footer{border-top:1px solid var(--border)}
 
 <nav id="nav">
   <a href="#inicio" class="nav-logo" aria-label="ThunderBarber Studio">
-    <img class="nav-logo-img" src="https://i.postimg.cc/HsPnRRYP/5170344977853690156-1-removebg-preview.png" alt="ThunderBarber Studio">
+    <img class="nav-logo-img" src="./logo-thunder-clean.png" alt="ThunderBarber Studio">
   </a>
   <ul class="nav-links">
     <li><a href="#servicios">SERVICIOS</a></li>
@@ -1191,9 +1172,7 @@ footer{border-top:1px solid var(--border)}
   <div class="hero-inner">
     <div id="status-hero" class="status-badge open"><span class="status-dot"></span><span id="status-text">ABIERTO AHORA</span></div>
     <div class="hero-eyebrow">ZONA ANDARES · LOBBY 33 · ZAPOPAN</div>
-    <div class="hero-brand">
-      <img class="hero-brand-img" src="https://i.postimg.cc/HsPnRRYP/5170344977853690156-1-removebg-preview.png" alt="ThunderBarber Studio">
-    </div>
+    <img class="hero-brand-img" src="./logo-thunder-clean.png" alt="ThunderBarber Studio">
     <div class="hero-sep"></div>
     <p class="hero-tag">Cortes de precisión. Experiencia sin igual.</p>
     <p class="hero-micro">Reserva manual elegante, disponibilidad visual y confirmación inmediata por WhatsApp.</p>
@@ -1622,7 +1601,7 @@ footer{border-top:1px solid var(--border)}
 
 <footer>
   <div class="ft-logo-wrap">
-    <img class="ft-logo-img" src="https://i.postimg.cc/HsPnRRYP/5170344977853690156-1-removebg-preview.png" alt="ThunderBarber Studio">
+    <img class="ft-logo-img" src="./logo-thunder-clean.png" alt="ThunderBarber Studio">
   </div>
   <div class="ft-studio">S T U D I O · Z O N A A N D A R E S</div>
   <div class="ft-divider"></div>
